@@ -1,0 +1,77 @@
+<?php
+
+namespace Gost\Bundle\SiteManagerBundle\Service;
+
+use Gost\Bundle\BaseBundle\Service\NavigationService;
+
+/**
+ * 导航管理服务类
+ *
+ * @author devylee
+ *        
+ */
+class MNavigationService extends NavigationService {
+
+	/**
+	 * @todo
+	 */
+	public function createNavigation() {
+		//TODO
+	}
+
+	/**
+	 * @todo
+	 */
+	public function updateNavigation() {
+		//TODO
+	}
+
+	/**
+	 * @todo
+	 */
+	public function deleteNavigation() {
+		//TODO
+	}
+
+	/**
+	 * @todo
+	 */
+	public function createMenu() {
+		//TODO
+	}
+
+	/**
+	 * @todo
+	 */
+	public function updateMenu() {
+		//TODO
+	}
+
+	/**
+	 * @todo
+	 */
+	public function deleteMenu() {
+		//TODO
+	}
+
+	/**
+	 * @todo
+	 */
+	public function createParameter() {
+		//TODO
+	}
+
+	/**
+	 * @todo
+	 */
+	public function updateParameter() {
+		//TODO
+	}
+
+	/**
+	 * @todo
+	 */
+	public function deleteParameter() {
+		//TODO
+	}
+}

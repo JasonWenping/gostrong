@@ -1,0 +1,18 @@
+# 幻灯片管理
+gsm_picshow:
+    pattern: /picshow
+    defaults: { _controller: "GostSiteManagerBundle:Picshow:list" }
+
+gsm_picshow_add:
+    pattern: /picshow/add
+    defaults: { _controller: "GostSiteManagerBundle:Picshow:add"}
+
+gsm_picshow_edit:
+    pattern: /picshow/edit/{id}
+    defaults: { _controller: "GostSiteManagerBundle:Picshow:edit"}
+    requirements: { id: \d+ }
+
+gsm_picshow_del:
+    pattern: /picshow/del/{id}
+    defaults: { _controller: "GostSiteManagerBundle:Picshow:del"}
+    requirements: { id: \d+ }

@@ -1,0 +1,27 @@
+{% extends 'GostSiteBundle::layout.html.twig' %}
+{% block main %}
+<hr noshade="noshade" style="height:1px; width:100%; margin:0; color:#C30;" />
+<div id="middle">
+	<div><img src="{{ asset('images/site-news_banner.jpg') }}" /></div>
+	<div>
+		<div class="middle_left_banner">
+		{% block channel %}
+			<ul>
+			{% for item in channel %}
+				<li><a href="{{ item.href }}">{{ item.name }}</a></li>
+				<img src="{{ asset('images/site-lanmu_seperator_line.jpg') }}" />
+			{% endfor %}
+			</ul>
+		{% endblock %}
+		</div>
+		<div class="middle_right_banner">
+			<div class="middle_right_title"><span>>>{{ channel_title }}</span></div>
+			<div class="middle_content">
+			{% block content %}
+			{% endblock %}
+			</div>
+		</div>
+	</div>
+</div>
+<div class="float_Clear"></div>
+{% endblock %}

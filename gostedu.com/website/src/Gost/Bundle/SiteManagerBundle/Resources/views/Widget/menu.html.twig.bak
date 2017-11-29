@@ -1,0 +1,21 @@
+<div class="content">
+  <div class="left_title">系统栏目</div>
+  <div class="left_nav">
+      <ul class="menu-one gostedu-api" gostedu-api="{api:'cp.leftmenu'}">
+        <li class="menu-group">
+          <div class="header"><a href="#">{% image '@GostSiteManagerBundle/Resources/public/images/cp-wenzhang_icon.png' %} <img src="{{ asset_url }}" />{% endimage %}系统首页</a></div>
+        </li>
+		{% for group in menu %}
+        <li class="menu-group menu_{{ group.key }}">
+          <div class="header"><a href="#"> {% image '@GostSiteManagerBundle/Resources/public/images/cp-wenzhang_icon.png' %} <img src="{{ asset_url }}" />{% endimage %}{{ group.title }}</a></div>
+          {% if group.functions %}
+          <ul class="menu-two menu-func">
+            {% for func in group.functions if func.isMenuItem %}
+            <li class="submenu_{{ func.key }}">{% image '@GostSiteManagerBundle/Resources/public/images/cp-title_icon.png' %} <img src="{{ asset_url }}" />{% endimage %}<a href="{{ generate_url(func.route) }}">{{ func.title }}</a></li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+		{% endfor %}
+		</ul>
+	</div>
+</div>

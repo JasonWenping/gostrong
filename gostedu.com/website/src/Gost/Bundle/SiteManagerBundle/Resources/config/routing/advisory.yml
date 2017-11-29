@@ -1,0 +1,18 @@
+# 咨询管理
+gsm_advisory:
+    pattern: /advisory
+    defaults: { _controller: "GostSiteManagerBundle:Advisory:list"}
+
+gsm_advisory_add:
+    pattern: /advisory/add
+    defaults: { _controller: "GostSiteManagerBundle:Advisory:add"}
+
+gsm_advisory_edit:
+    pattern: /advisory/edit/{id}
+    defaults: { _controller: "GostSiteManagerBundle:Advisory:edit"}
+    requirements: { id: \d+ }
+
+gsm_advisory_del:
+    pattern: /advisory/del/{id}
+    defaults: { _controller: "GostSiteManagerBundle:Advisory:del"}
+    requirements: { id: \d+ }

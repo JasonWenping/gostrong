@@ -1,0 +1,21 @@
+{% extends 'GostSiteManagerBundle::base.html.twig' %}
+{% block document_body %}
+<div id="top_banner">
+	{% block top_banner %}
+	<div class="logo">{% image '@GostSiteManagerBundle/Resources/public/images/cp-logo.png' %}<img src="{{ asset_url }}" />{% endimage %}</div>
+	<div class="login_info">
+		<div><a href="{{ path('gsm_logout') }}">退出登录</a> | <a href="http://gostedu.com" target="_blank">官网首页</a></div>
+		<div>欢迎你 {{ app.user.username }} 今天是 {{ 'now'|date('Y年m月d日') }}</div>
+	</div>
+	{% endblock %}
+</div>
+<div id="left_banner">
+	{{ render(controller('GostSiteManagerBundle:Widget:menu')) }}
+</div>
+<div id="global-tabs" class="right_banner gostedu-api" gostedu-api="{api:'ui.tabs'}">
+  <ul>
+    <li id="tab_{{ tab_id }}"><a href="#panel_{{ tab_id }}">{{ tab_title }}</a></li>
+  </ul>
+  <div id="panel_{{ tab_id }}">{% include tab_template %}</div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+<?php
+
+namespace Gost\Bundle\SiteManagerBundle\Form;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+/**
+ * 文章表单类
+ *
+ * @author stalker
+ *        
+ */
+class NewsForm extends AbstractType {
+	
+	private $channelHash = array();
+	private $register = true;
+	
+	function __construct($register = true, $groups = 0) {
+		$this->register = $register;
+		$groups = $register ? $groups + 1 : $groups;
+		for ($i = 0; $i < $groups; $i ++) {
+			$this->sort[$i] = $i;
+		}
+	}
+	
+	/**
+	 * @see \Symfony\Component\Form\AbstractType::buildForm()
+	 */
+	public function buildForm(FormBuilderInterface $builder, array $options) {
+		$builder->add('id', 'hidden')
+				->add('title', 'text', array('required'=>true, 'max_length'=>32, 'read_only'=>!$this->register))
+				->add('content', 'textarea', array('required'=>true, 'max_length'=>32))
+				->add('channel', 'choice', array('choices' => $this->channelHash))
+				->add('sort', 'choice', array('choices'=>$this->sort));
+	}
+	
+	/**
+	 * @see \Symfony\Component\Form\FormTypeInterface::getName()
+	 */
+	public function getName() {
+		return 'form_news';
+	}
+	
+}

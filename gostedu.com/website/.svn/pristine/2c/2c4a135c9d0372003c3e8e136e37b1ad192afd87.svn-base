@@ -1,0 +1,15 @@
+<?php
+
+namespace Gost\Bundle\BaseBundle\Entity;
+
+use Gost\Bundle\BaseBundle\Component\BaseEntity;
+
+/**
+ * 内容对象实体类
+ *
+ * @author devy
+ *        
+ */
+class Content extends BaseEntity {
+	
+}

@@ -1,0 +1,29 @@
+{% spaceless %}
+<div id="{{ tab_id }}">
+  <form id="picshow_form" action="{{ action }}" method="post" class="gostedu-api" gostedu-api="{api:'ui.ajax_form'}" novalidate {{ form_enctype(form) }}>
+    <table class="general_form">
+      <caption>{{ title }}</caption>
+      <tbody>
+        <tr>
+          <td><label>图片:</label></td>
+          <td>{{ form_widget(form.image, { 'attr': {'class': 'validate[required]'} }) }}</td>
+        </tr>
+        <tr>
+          <td><label>URL:</label></td>
+          <td>{{ form_widget(form.url) }}</td>
+        </tr>
+      </tbody>
+    </table>
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    <div class="dialog_toolbar">
+      <button type="submit" class="button_save">保存</button>
+      <button type="button" class="button_cancel gostedu-api" gostedu-api="{api:'ui.close_dialog'{% if not close_dialog %},args:{bind:'click'}{% endif %}}">取消</button>
+      {% if is_permitted('picshow', 8) and picshow%}
+      <button type="button" class="button_delete gostedu-api" gostedu-api="{api:'cp.call_action',args:{confirm:'确定删除该幻灯片?',action:'{{ path('gsm_picshow_del', { id: picshow.id }) }}',close_dialog:true}}">删除</button></div>
+      {% endif %}
+    {{ form_rest(form) }}
+  </form>
+</div>
+{% endspaceless %}

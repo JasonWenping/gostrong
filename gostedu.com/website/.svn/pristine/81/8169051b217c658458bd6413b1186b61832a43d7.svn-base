@@ -1,0 +1,60 @@
+{% spaceless %}
+<div id="{{ tab_id }}">
+
+<table border="0" cellspacing="1" cellpadding="0" class="general_table gostedu-api" gostedu-api="{api:'ui.tree_table'}">
+  <caption><strong>功能组列表</strong>
+  {% if is_permitted('sys_functions', 4) %}
+    <a href="{{ path('gsm_sys_functions_addgroup') }}" class="gostedu-api" gostedu-api="{api:'cp.form_dialog',args:{title:'登记功能组',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_sys_functions') }}'}}">登记新功能组</a>
+  {% endif %}
+  </caption>
+   <thead>
+       <tr>
+           <th>排序</th>
+           <th>Key</th>
+           <th>标题</th>
+           <th>路由(Route)</th>
+           <th>菜单项?</th>
+           <th>所含操作</th>
+           <th>操作</th>
+       </tr>
+   </thead>
+   <tbody>
+   {% for group in groups %}
+       <tr class="datarow_{{ loop.index0 % 2 + 1 }}" data-tt-id="{{ group.id }}"> 
+            <td>{{ group.sortNo }}</td>
+            <td>{{ group.key }}</td>
+            <td>{{ group.title }}</td>
+            <td colspan="3"></td>
+            <td class="action_column">
+            {% if is_permitted('sys_functions', 2) %}
+              <a href="{{ path('gsm_sys_functions_editgroup', { id: group.id }) }}" class="gostedu-api" gostedu-api="{api:'cp.form_dialog',args:{title:'修改功能组',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_sys_functions') }}'}}">修改</a>
+            {% endif %}
+                 <a href="{{ path('gsm_sys_functions_regfunc', { group: group.id }) }}" class="gostedu-api" gostedu-api="{api:'cp.form_dialog',args:{title:'登记系统功能',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_sys_functions', { group: group.id }) }}'}}">登记新功能</a>
+           </td> 
+       </tr>
+       {% for function in group.functions %}
+           <tr class="" data-tt-id="{{ group.id }}_{{ function.id }}" data-tt-parent-id="{{group.id }}"> 
+                <td>{{ function.sortNo }}</td>
+                <td>{{ function.key }}</td>
+                <td>{{ function.title }}</td>
+	            <td>{{ function.route }}</td>
+	            <td>{{ function.isMenuItem ? '是' : '否' }}</td>
+	            <td>{% for action in function.actions %}
+	                <sup>{{ action.code }}</sup>{{ action.title }}{% if loop.index < loop.length %}, {% endif %}
+	              {% endfor %}</td>
+                <td class="action_column">
+		        {% if is_permitted('sys_functions', 2) %}
+		          <a href="{{ path('gsm_sys_functions_editfunc', { group: group.id, id: function.id }) }}" class="gostedu-api" gostedu-api="{api:'cp.form_dialog',args:{title:'修改功能定义',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_sys_functions') }}'}}">修改</a> 
+		        {% endif %}
+		        {% if is_permitted('sys_functions', 16) %}
+		          <a href="{{ path('gsm_sys_functions_permission', { id: function.id }) }}" class="gostedu-api" gostedu-api="{api:'cp.form_dialog',args:{width:650,title:'功能权限设置'}}">权限设置</a>
+		        {% endif %}
+		        </td>
+  			</tr>
+       {% endfor %}
+   {% endfor %}
+   </tbody>
+</table>
+
+</div>
+{% endspaceless %}

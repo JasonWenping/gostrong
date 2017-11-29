@@ -1,0 +1,34 @@
+{% block content %}
+<div style="margin-left:12px; margin-bottom:25px;">
+	<select>
+	{% for item in list_channel %}
+		<option>{{ item.name }}</option>
+	{% endfor %}
+	</select>
+</div>
+<div class="listTable">
+	<table cellspacing="0" cellpadding="0">
+		<tr class="listTitle">
+			<td><input type="checkbox" /></td>
+			{% for item in list_captains %}
+				<td>item</td>
+			{% endfor %}
+			<td>操作</td>
+		</tr>
+	{% for tr in list_body %}
+		<tr>
+			<td><input type="checkbox" id="{{ tr.id }}"/></td>
+		{% for td in tr.body %}
+			<td>{{ td }}</td>
+		{% endfor %}
+			<td>
+			{% for handle in tr.handles %}
+			<a href="{{ handle.url }}">{{ handle.name }}</a> 
+			{% endfor %}
+			</td>
+		</tr>
+	{% endfor %}
+	</table>
+	<div class="page_Turn">{{ pagination }}</div>
+</div>
+{% endblock %}

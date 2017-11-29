@@ -1,0 +1,49 @@
+<?php
+
+namespace Gost\Bundle\BaseBundle\Form;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+class CooperatorType extends AbstractType
+{
+    protected $cooTypeHash;
+
+    public function __construct(array $cootype_hash) {
+        $this->cooTypeHash = $cootype_hash;
+    }
+
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('type', 'choice', $this->cooTypeHash)
+            ->add('name')
+            ->add('logo', 'file')
+            ->add('website')
+            ->add('introduction')
+        ;
+    }
+    
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Gost\Bundle\BaseBundle\Entity\Cooperator'
+        ));
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'gost_bundle_basebundle_cooperator';
+    }
+}

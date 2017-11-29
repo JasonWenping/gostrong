@@ -1,0 +1,31 @@
+{% extends 'GostSiteBundle::layout.html.twig' %}
+{% block main %}
+<hr noshade="noshade" style="height:1px; width:100%; margin:0; color:#C30;" />
+<div id="middle">
+	<div><img src="{{ asset('images/site-zixun_banner.jpg') }}"  /></div>
+	<div class="images_position"> 引导性的问题 </div>
+	<div class="zixun_table">
+		<h2>咨询预约申请</h2>
+		姓名：
+		<input type="text" width="150px" />
+		<br />
+		学校：
+		<input type="text" width="150px" />
+		<br />
+		专业：
+		<input type="text" width="150px" />
+		<br />
+		联系方式：
+		<input type="text" width="150px" />
+		<br />
+		咨询时间：
+		<input type="text" width="150px" />
+		<br />
+		备注：
+		<input type="text" width="200px" height="150px" value="填写想要咨询的问题" />
+		<br />
+		<input type="button" value="提交申请"  />
+	</div>
+</div>
+<div class="float_Clear"></div>
+{% endblock %}

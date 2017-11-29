@@ -1,0 +1,21 @@
+<?php
+
+namespace Gost\Bundle\SiteManagerBundle\Controller;
+
+use Gost\Bundle\SiteManagerBundle\Component\MBaseController;
+
+/**
+ * 网站导航管理控制器
+ *
+ * @author devylee
+ *        
+ */
+class NavigationController extends MBaseController {
+	
+	/**
+	 * @see \Gost\Bundle\SiteManagerBundle\Component\MBaseController::getCurrentFunc()
+	 */
+	public function getCurrentFunc() {
+		return 'site_navigation';
+	}
+}

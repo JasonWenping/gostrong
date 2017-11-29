@@ -1,0 +1,70 @@
+{% spaceless %}
+<div id="{{ tab_id }}">
+        <table width="100%" border="0" cellspacing="1" cellpadding="0" class="general_table">
+          <caption>导航管理
+        {% if is_permitted('site_navigation', 2) %}<a href="{{ path('gsm_navigation_register') }}" class="gostedu-api" 
+                    gostedu-api="{api:'cp.form_dialog',args:{title:'导航位登记',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_navigation_management') }}'}}">登记新导航位</a>
+         {% endif %}
+          </caption>
+          <tbody>
+            <tr><td>
+            
+    {% for navigation in navigations %}
+        <table width="100%" border="0" cellspacing="1" cellpadding="0" class="general_table">
+          <caption>
+          {% if is_permitted('site_navigation', 4) %}
+              <a href="{{ path('gsm_navigation_edit', { id: navigation.id }) }}" class="gostedu-api" 
+                   gostedu-api="{api:'cp.form_dialog',args:{title:'修改导航位',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_navigation_management') }}'}}"> <strong>{{ navigation.name }}</strong><span>({{ navigation.key }})</span></a>
+          {% else %}
+              <strong>{{ navigation.name }}</strong><span>({{ navigation.key }})</span>
+          {% endif %}
+          </caption>
+          <tbody>
+              <tr>
+                <td class="datarow_0">
+                    {% for menu in navigation.menus %}
+                        {% if menu.isTopMenu%}
+                            <dl>
+                                 <dt>
+                                 {% if is_permitted('site_navigation', 32) %}
+                                     <a href="{{ path('gsm_navigation_menu_edit', { id: menu.id }) }}" class="gostedu-api" 
+                                         gostedu-api="{api:'cp.form_dialog',args:{title:'修改导航菜单',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_navigation_management') }}'}}">{{ menu.name }}</a>
+                                {% else %}
+                                    <p>{{ menu.name }}</p>
+                                {% endif %}
+                                 </dt>
+                                 {% for submenu in menu.submenus %}
+                                     <dd>
+                                     {% if is_permitted('site_navigation', 32) %}
+                                         <a href="{{ path('gsm_navigation_menu_edit', { id: submenu.id }) }}" class="gostedu-api" 
+                                             gostedu-api="{api:'cp.form_dialog',args:{title:'修改导航菜单',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_navigation_management') }}'}}">{{ submenu.name }}</a>
+                                     {% else %}
+                                        <p>{{ submenu.name }}</p>
+                                     {% endif %}
+                                     </dd>
+                                 {% endfor %}
+                                 {% if is_permitted('site_navigation', 16) %}
+                                     <dd>
+                                         <a href="{{ path('gsm_navigation_menu_register', {  navigation:navigation.id, parent:menu.id }) }}" class="gostedu-api" 
+                                             gostedu-api="{api:'cp.form_dialog',args:{title:'登记导航菜单',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_navigation_management') }}'}}">登记下级</a>
+                                     </dd>
+                                 {% endif %}
+                             </dl>
+                       {% endif %}
+                    {% endfor %}
+                    {% if is_permitted('site_navigation', 16) %}
+                        <dl>
+                            <a href="{{ path('gsm_navigation_menu_register', { navigation:navigation.id }) }}" class="gostedu-api" 
+                                gostedu-api="{api:'cp.form_dialog',args:{title:'登记导航菜单',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_navigation_management') }}'}}">登记新栏</a>
+                        </dl>
+                    {% endif %}
+                </td>
+              </tr>
+          </tbody>
+     </table>
+     {% endfor %}
+            </td></tr>
+          </tbody>
+       </table>
+</div>
+{% endspaceless %}

@@ -1,0 +1,72 @@
+{% extends 'GostSiteBundle::layout.html.twig' %}
+{% block main %}
+<div id="picShow">
+	<!--  需要添加JS   -->
+	<div style="margin:0 auto; width:1499px; height:362; background-image:url(upload/picShow1.jpg)">
+		<div style="padding-top:310px"><img src="{{ asset('images/site-picShow_line.jpg') }}" /></div>
+	</div>
+</div>
+<div id="middle">
+	<div class="title_pic"><img src="{{ asset('images/site-title_pic.jpg') }}" /></div>
+	<div class="question_nvs">
+		<div>
+			<a href="nvs.html"><img src="{{ asset('images/site-index_nvs_pic1.jpg') }}" style="border:none; float:left; margin-right:83px" /></a> 
+			<a href="nvs.html"><img src="{{ asset('images/site-index_nvs_pic2.jpg') }}" style="border:none;float:left; margin-right:83px " /></a> 
+			<a href="nvs.html"><img src="{{ asset('images/site-index_nvs_pic3.jpg') }}" style="border:none;float:left;" /></a>
+		</div>
+		<div class="float_Clear"></div>
+	</div>
+	<div class="question_word">
+		<img src="{{ asset('images/site-nvs_3line.jpg') }}" style="float:left" />
+		<div class="question_content">有人说大学生就业难是因为现在的大学生越来越多，已经不稀罕了。诚然，高校扩招的计划经济的数超过了市场经济的增长……</div>
+		<img src="assets/images/site-nvs_3line.gif" style="float:left" />
+		<div class="question_content">有人说大学生就业难是因为现在的大学生越来越多，已经不稀罕了。诚然，高校扩招的计划经济的数超过了市场经济的增长……</div>
+		<img src="assets/images/site-nvs_3line.gif" style="float:left" />
+		<div class="question_content">有人说大学生就业难是因为现在的大学生越来越多，已经不稀罕了。诚然，高校扩招的计划经济的数超过了市场经济的增长……</div>
+		<div class="float_Clear"></div>
+		<div class="nvs_shadow_line"><img src="{{ asset('images/site-index_nvs_shadowline.jpg') }}" /></div>
+		<div class="middle_news">
+			<div class="news">
+				<div class="news_title">
+					<img src="{{ asset('images/site-title_icon.jpg') }}" style="float:left; margin:3px 5px  0 0;" />
+					<h1>公司动态</h1>
+					<div class="more_link"><a href="news.html"><img src="{{ asset('images/site-more.jpg') }}" /></a></div>
+				</div>
+				<div><img src="{{ asset('images/site-title_line.jpg') }}" /></div>
+				<div style="margin:18px 0;"><img src="{{ asset('upload/news_pic1.jpg') }}" /></div>
+				<div class="news_list">
+					<ul>
+					{% for item in company_news %}
+						<li><img src="{{ asset('images/site-news_list_icon1.jpg') }}" style="margin-right:4px;" /><a href="{{ item.href }}">{{ item.title }}<span class="date">{{ item.date }}<span></a></li>
+					{% endfor %}
+					</ul>
+				</div>
+			</div>
+			<div class="news_seperator"></div>
+			<div class="students_share">
+				<div class="news_title">
+					<img src="{{ asset('images/site-title_icon.jpg') }}" style="float:left; margin:3px 5px  0 0;" />
+					<h1>学员分享</h1>
+					<div class="more_link"><a href="share.html"><img src="{{ asset('images/site-more.jpg') }}" /></a></div>
+				</div>
+				<div><img src="{{ asset('images/site-title_line.jpg') }}" /></div>
+				<div style="margin:18px 0;"><img src="{{ asset('upload/news_pic2.jpg') }}" /></div>
+				<div class="news_list">
+					<ul>
+					{% for item in student_share %}
+						<li><img src="{{ asset('images/site-news_list_icon1.jpg') }}" style="margin-right:4px;" /><a href="{{ item.href }}">{{ item.title }}<span class="date">{{ item.date }}<span></a></li>
+					{% endfor %}
+					</ul>
+				</div>
+			</div>
+			<div class="three_bottom"> 
+			<div><a href="schedule.html"><img src="{{ asset('images/site-buttom_pic2.jpg') }}" /></a></div>
+			<hr width="170px" color="#CC0000" />
+			<div><a href="#"><img src="{{ asset('images/site-buttom_pic1.jpg') }}" /></a></div>
+			</div>
+		</div>
+		<div class="float_Clear"></div>
+		<div class="friendship_link"> <img src="{{ asset('images/site-link_href.jpg') }}" /> </div>
+	</div>
+</div>
+{% endblock %}

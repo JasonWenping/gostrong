@@ -1,0 +1,36 @@
+# 合作伙伴管理
+gsm_content_cooperator:
+    pattern: /cooperator
+    defaults: { _controller: "GostSiteManagerBundle:Cooperator:list" }
+
+gsm_content_cooperator_add:
+    pattern: /cooperator/add
+    defaults: { _controller: "GostSiteManagerBundle:Cooperator:add"}
+
+gsm_content_cooperator_edit:
+    pattern: /cooperator/edit/{id}
+    defaults: { _controller: "GostSiteManagerBundle:Cooperator:edit"}
+    requirements: { id: \d+ }
+
+gsm_content_cooperator_del:
+    pattern: /cooperator/del/{id}
+    defaults: { _controller: "GostSiteManagerBundle:Cooperator:del"}
+    requirements: { id: \d+ }
+
+gsm_content_cootype:
+    pattern: /cootype
+    defaults: { _controller: "GostSiteManagerBundle:CooType:list" }
+
+gsm_content_cootype_add:
+    pattern: /cootype/add
+    defaults: { _controller: "GostSiteManagerBundle:CooType:add"}
+
+gsm_content_cootype_edit:
+    pattern: /cootype/edit/{id}
+    defaults: { _controller: "GostSiteManagerBundle:CooType:edit"}
+    requirements: { id: \d+ }
+
+gsm_content_cootype_del:
+    pattern: /cootype/del/{id}
+    defaults: { _controller: "GostSiteManagerBundle:CooType:del"}
+    requirements: { id: \d+ }

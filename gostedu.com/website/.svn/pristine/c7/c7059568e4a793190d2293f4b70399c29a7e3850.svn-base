@@ -1,0 +1,30 @@
+{% extends 'GostSiteManagerBundle::base.html.twig' %}
+{% block document_body %}
+<div class="log_bg_left"><img src="{{ asset('assets/images/cp-bg_pic.png') }}" /></div>
+<div id="log_Panel">
+	<div class="log_banner">
+		<div class="log_table">
+			<form action="{{ path('gsm_login_check') }}" name="login" id="login_form" method="post" >
+				<table>
+					<tr>
+						<td>用户名：</td>
+						<td><input name="_username" type="text" /></td>
+					</tr>
+					<tr>
+						<td>密 码：</td>
+						<td><input name="_password" type="password" /></td>
+					</tr>
+			        {% if error %}
+			        <tr>
+			          <td colspan="2">{{ error }}</td>
+			        </tr>
+			        {% endif %}
+				</table><div><input name="submit" type="submit" value="登 陆" class="submits" onmouseover="this.style.backgroundPosition='left -31px'"onmouseout="this.style.backgroundPosition='left top'" /></div>
+			</form>
+			
+		</div>
+	</div>
+	<div class="log_reflection"></div>
+	<div class="log_shadow"><img src="{{ asset('assets/images/cp-loginPanel_bg_shadow.png') }}" /></div>
+</div>
+{% endblock %}

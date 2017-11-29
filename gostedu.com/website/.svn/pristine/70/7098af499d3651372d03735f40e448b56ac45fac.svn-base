@@ -1,0 +1,24 @@
+{% spaceless %}
+<div id="{{ tab_id }}">
+  <form id="role_form" action="{{ action }}" method="post" class="gostedu-api" gostedu-api="{api:'ui.ajax_form'}" novalidate>
+    <table class="general_form">
+      <caption>{{ title }}</caption>
+      <tbody>
+        <tr>
+          <td><label>角色名:</label></td>
+          <td>{{ form_widget(role_form.name, { 'attr': {'class': 'validate[required]'} }) }}</td></tr>
+      </tbody>
+    </table>
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    <div class="dialog_toolbar">
+      <button type="submit" class="button_save">保存</button>
+      <button type="button" class="button_cancel gostedu-api" gostedu-api="{api:'ui.close_dialog'{% if not close_dialog %},args:{bind:'click'}{% endif %}}">取消</button>
+      {% if is_permitted('sys_roles', 8) and role and deleteable %}
+      <button type="button" class="button_delete gostedu-api" gostedu-api="{api:'cp.call_action',args:{confirm:'确定删除此角色?',action:'{{ path('gsm_sys_roles_delete', { id: role.id }) }}',close_dialog:true}}">删除</button></div>
+      {% endif %}
+    {{ form_rest(role_form) }}
+  </form>
+</div>
+{% endspaceless %}

@@ -1,0 +1,12 @@
+parameters:
+#    gost_base.example.class: Gost\Bundle\BaseBundle\Example
+
+services:
+#    gost_base.example:
+#        class: %gost_base.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+    gost_base.twig_extension:
+        class: Gost\Bundle\BaseBundle\Twig\Extension\BaseExtension
+        arguments: ["@service_container"]
+        tags: 
+            - { name: twig.extension }

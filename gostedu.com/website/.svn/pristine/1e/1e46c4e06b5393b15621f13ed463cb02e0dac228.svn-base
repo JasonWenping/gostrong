@@ -1,0 +1,46 @@
+{% spaceless %}
+<div id="{{ tab_id }}">
+
+<table border="0" cellspacing="1" cellpadding="0" class="gostedu-api" gostedu-api="{api:'ui.list_table'}">
+  <caption class="f14"><strong>活动列表</strong>
+  {% if is_permitted('content_activity', 2) %}
+    <a href="{{ path('gsm_content_activity_add') }}" class="gostedu-api" gostedu-api="{api:'cp.form_dialog',args:{title:'添加活动',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_content_activity') }}'}}">添加活动</a>
+  {% endif %}
+  </caption>
+   <thead>
+       <tr>
+           <th>ID</th>
+           <th>标题</th>
+           <th>发布时间</th>
+           <th>作者</th>
+           <th>来源</th>
+           <th>起始时间</th>
+           <th>截止时间</th>
+           <th>操作</th>
+       </tr>
+   </thead>
+   <tbody>
+   {% for activity in activity_list %}
+       <tr class="datarow_{{ loop.index0 % 2 + 1 }}" data-tt-id="{{ activity.id }}"> 
+            <td>{{ activity.id }}</td>
+            <td>{{ activity.title }}</td>
+            <td>{{ activity.sendtime|date('Y-m-d H:i') }}</td>
+            <td>{{ activity.author }}</td>
+            <td>{{ activity.source }}</td>
+            <td>{{ activity.start_time|date('Y-m-d H:i') }}</td>
+            <td>{{ activity.temination_time|date('Y-m-d H:i') }}</td>
+            <td class="action_column">
+            {% if is_permitted('content_activity', 4) %}
+              <a href="{{ path('gsm_content_activity_edit', { id: activity.id }) }}" class="gostedu-api" gostedu-api="{api:'cp.form_dialog',args:{title:'修改活动',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_content_activity') }}'}}">修改</a>
+            {% endif %}
+            {% if is_permitted('content_activity', 8) %}
+              <a href="{{ path('gsm_content_activity_del', { id: activity.id }) }}" class="gostedu-api" gostedu-api="{api:'cp.form_dialog',args:{title:'删除活动',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_content_activity') }}'}}">删除</a>
+            {% endif %}
+           </td> 
+       </tr>
+   {% endfor %}
+   </tbody>
+</table>
+
+</div>
+{% endspaceless %}

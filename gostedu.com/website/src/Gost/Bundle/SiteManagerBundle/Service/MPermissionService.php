@@ -1,0 +1,333 @@
+<?php
+
+namespace Gost\Bundle\SiteManagerBundle\Service;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+use Gost\Bundle\SiteManagerBundle\Entity\MUser;
+use Gost\Bundle\SiteManagerBundle\Entity\MPermission;
+use Gost\Bundle\SiteManagerBundle\Entity\MFunc;
+use Gost\Bundle\SiteManagerBundle\Entity\MAction;
+use Gost\Bundle\SiteManagerBundle\Entity\MFuncGroup;
+use Gost\Bundle\SiteManagerBundle\Component\MBaseService;
+
+/**
+ * 权限服务
+ *
+ * @author devy
+ *        
+ */
+class MPermissionService extends MBaseService {
+
+	private $em;
+	
+	/**
+	 * @param ContainerInterface $container
+	 */
+	public function __construct(ContainerInterface $container) {
+		parent::__construct($container);
+		$this->em = $container->get('doctrine')->getManager();
+	}
+	
+	/**
+	 * 获取用户权限
+	 *
+	 * @param MUser $user
+	 * @param mixed $functions
+	 * @param mixed $scope
+	 *
+	 * @return array
+	 */
+	public function getUserPermissions(MUser $user, $functions = null, $scope = null) {
+		$user_permissions = $this->em->getRepository('GostSiteManagerBundle:MPermission')
+				->findUserPermission($user, $functions, $scope);
+		return $user_permissions;
+	}
+	
+	/**
+	 * 获取角色权限列表
+	 *
+	 * @param mixed $roles
+	 * @param mixed $functions
+	 * @param mixed $scope
+	 *
+	 * @return array
+	 */
+	public function getRolePermissions($roles, $functions = null, $scope = null) {
+		$role_permissions = $this->em->getRepository('GostSiteManagerBundle:MPermission')
+				->findRolePermission($roles, $functions, $scope);
+		return $role_permissions;
+	}
+	
+	/**
+	 * 获取功能组列表
+	 */
+	public function getFuncGroups() {
+		$groups = $this->em->getRepository('GostSiteManagerBundle:MFunc')
+				->findFuncGroups();
+		return $groups;
+	}
+	
+	/**
+	 * 获取功能列表
+	 *
+	 * @param mixed $groups
+	 */
+	public function getFunctions($groups = null) {
+		$functions = $this->em->getRepository('GostSiteManagerBundle:MFunc')
+				->findFunctions($groups);
+		return $functions;
+	}
+	
+	/**
+	 * 获取功能操作列表
+	 *
+	 * @param mixed $functions
+	 */
+	public function getFunctionActions($functions = null) {
+		$actions = $this->em->getRepository('GostSiteManagerBundle:MFunc')
+				->findActions($functions);
+		return $actions;
+	}
+	
+	/**
+	 * 创建功能组
+	 *
+	 * @param string $key
+	 * @param string $title
+	 * @param integer $sort
+	 * 
+	 * @return null|MFuncGroup
+	 */
+	public function createFuncGroup($key, $title, $sort = 0) {
+		if ($this->em->getRepository('GostSiteManagerBundle:MFuncGroup')
+				->exists(array('key'=>$key))) {
+			throw new \Exception('此功能组Key已经存在');
+		}
+		$group = new MFuncGroup();
+		$group->setKey($key)
+				->setTitle($title)
+				->setSortNo($sort);
+	
+		return $group->flush($this->em);
+	}
+	
+	/**
+	 * 更新功能组
+	 *
+	 * @param integer $id
+	 * @param string $title
+	 * @param integer $sort
+	 * 
+	 * @return null|MFuncGroup
+	 */
+	public function updateFuncGroup($id, $title, $sort = null) {
+		if (($group = $this->em->getRepository('GostSiteManagerBundle:MFuncGroup')
+						->find($id))
+				&& ($group instanceof MFuncGroup)) {
+			$group->setTitle($title);
+			if (is_integer($sort))
+				$group->setSortNo($sort);
+			return $group->flush($this->em);
+		} else {
+			throw new \Exception('功能组不存在');
+		}
+	}
+	
+	/**
+	 * 删除功能组
+	 *
+	 * @param integer $id
+	 */
+	public function deleteFuncGroup($id) {
+		if (($group = $this->em->getRepository('GostSiteManagerBundle:MFuncGroup')
+						->find($id))
+				&& ($group instanceof MFuncGroup)) {
+			if (count($group->getFunctions())) {
+				throw new \Exception('不可以删除非空功能组');
+			}
+			return $group->remove($this->em);
+		} else {
+			throw new \Exception('功能组不存在');
+		}
+	}
+	
+	/**
+	 * 创建功能
+	 *
+	 * @param string $key
+	 * @param string $title
+	 * @param string $route
+	 * @param integer $group_id
+	 * @param integer $sort
+	 * @param boolean $is_menu
+	 * @param array $actions
+	 * 
+	 * @throws \Exception
+	 * 
+	 * @return MFunc
+	 */
+	public function createFunction($key, $title, $route, $group_id, $sort, $is_menu, $actions) {
+		if (($group = $this->em->getRepository('GostSiteManagerBundle:MFuncGroup')
+						->find($group_id))
+				&& ($group instanceof MFuncGroup)) {
+			if ($this->em->getRepository('GostSiteManagerBundle:MFunc')
+					->exists(array('key'=>$key))) {
+				throw new \Exception('此功能Key已存在');
+			}
+			$func = new MFunc();
+			$func->setGroup($group)
+					->setKey($key)
+					->setTitle($title)
+					->setSortNo($sort)
+					->setRoute($route)
+					->setIsMenuItem($is_menu);
+			foreach ($actions as $code=>$title) {
+				$action = new MAction();
+				$action->setCode($code)->setTitle($title)->setFunc($func);
+				$func->addAction($action);
+				$this->em->persist($action);
+			}
+			$this->em->persist($func);
+			
+			try {
+				$this->em->beginTransaction(); // 批量数据处理的时候必须使用Transaction，允许在发生错误时回滚
+				$this->em->flush();
+				$this->em->commit();
+				
+				return $func;
+			} catch (\Exception $ex) {
+				$this->em->rollback();
+				throw $ex;
+			}
+		} else {
+			throw new \Exception('功能组不存在');
+		}
+	}
+	
+	/**
+	 * 修改功能
+	 *
+	 * @param integer $id
+	 * @param string $title
+	 * @param string $route
+	 * @param integer $group_id
+	 * @param integer $sort
+	 * @param boolean $is_menu
+	 * @param array $actions
+	 * 
+	 * @throws \Exception
+	 * 
+	 * @return MFunc
+	 */
+	public function updateFunction($id, $title, $route, $group_id, $sort, $is_menu, $actions) {
+		if (($func = $this->em->getRepository('GostSiteManagerBundle:MFunc')
+						->find($id))
+				&& ($func instanceof MFunc)) {
+			if (($group = $this->em->getRepository('GostSiteManagerBundle:MFuncGroup')
+							->find($group_id))
+					&& ($group instanceof MFuncGroup)) {
+				$func->setGroup($group)
+						->setTitle($title)
+						->setRoute($route)
+						->setSortNo($sort)
+						->setIsMenuItem($is_menu);
+				$exists_actions = array();
+				foreach ($func->getActions() as $action) {
+					if (array_key_exists($action->getCode(), $actions)) {
+						$exists_actions[$action->getCode()] = $action;
+					} else {
+						$func->removeAction($action);
+						$this->em->remove($action);
+					}
+				}
+				foreach ($actions as $code=>$title) {
+					if (array_key_exists($code, $exists_actions)) {
+						$action = $exists_actions[$code];
+					} else {
+						$action = new MAction();
+						$action->setCode($code);
+					}
+					$action->setTitle($title)->setFunc($func);
+					$func->addAction($action);
+					$this->em->persist($action);
+				}
+	
+				$this->em->persist($func);
+				try {
+					$this->em->beginTransaction(); // 批量数据处理的时候必须使用Transaction，允许在发生错误时回滚
+					$this->em->flush();
+					$this->em->commit();
+					
+					return $func;
+				} catch (\Exception $ex) {
+					$this->em->rollback();
+					throw $ex;
+				}
+			} else {
+				throw new \Exception('功能组不存在');
+			}
+		} else {
+			throw new \Exception('功能不存在');
+		}
+	}
+	
+	/**
+	 * 删除功能
+	 *
+	 * @param integer $id
+	 * @throws \Exception
+	 */
+	public function deleteFunction($id) {
+		if (($func = $this->em->getRepository('GostSiteManagerBundle:MFunc')
+						->find($id))
+				&& ($func instanceof MFunc)) {
+			$perms = $this->em->getRepository('GostSiteManagerBundle:MPermission')
+					->findBy(array('function'=>$func->getId()));
+			foreach ($perms as $perm) {
+				$this->em->remove($perm);
+			}
+			foreach ($func->getActions() as $action) {
+				$this->em->remove($action);
+			}
+			$this->em->remove($func);
+			
+			try {
+				$this->em->beginTransaction(); // 批量数据处理的时候必须使用Transaction，允许在发生错误时回滚
+				$this->em->flush();
+				$this->em->commit();
+			} catch (\Exception $ex) {
+				$this->em->rollback();
+				throw $ex;
+			}
+		} else {
+			throw new \Exception('功能不存在');
+		}
+	}
+	
+	/**
+	 * 设置功能权限
+	 *
+	 * @param MFunc $function
+	 * @param integer $targetType
+	 * @param integer $targetId
+	 * @param integer $scope
+	 * @param integer $permissions
+	 * 
+	 * @return MPermission
+	 */
+	public function setFuncPermissions($function, $targetType, $targetId, $scope, $permissions) {
+		if (!(($perm = $this->em->getRepository('GostSiteManagerBundle:MPermission')
+						->findOneBy(array('function'=>$function->getId(), 'targetType'=>$targetType, 'targetId'=>$targetId)))
+				&& ($perm instanceof MPermission))) {
+			$perm = new MPermission();
+			$perm->setFunction($function)
+					->setTargetType($targetType)
+					->setTargetId($targetId);
+		}
+		$perm->setScope($scope)
+				->setPermissions($permissions);
+		return $perm->flush($this->em);
+	}
+}

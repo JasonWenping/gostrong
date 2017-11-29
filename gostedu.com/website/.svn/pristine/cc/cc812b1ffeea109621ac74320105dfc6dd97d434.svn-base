@@ -1,0 +1,14 @@
+{% extends 'GostSiteManagerBundle::layout.html.twig' %}
+{% block main_bloc %}
+<div id="tag">
+	<ul>a
+	{% for item in tag %}
+		<li><a href="{{ item.href }}">{{ item.name }}</a></li>
+	{% endfor %}
+	</ul>
+</div>
+<div class="tag_Content">
+	{% block content %}
+	{% endblock %}
+</div>
+{% endblock %}

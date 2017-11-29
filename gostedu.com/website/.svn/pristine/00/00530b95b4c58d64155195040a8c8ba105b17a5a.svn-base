@@ -1,0 +1,8 @@
+gost_site_manager:
+    resource: "@GostSiteManagerBundle/Resources/config/routing.yml"
+    prefix:   /controlpanel
+
+gost_site:
+    resource: "@GostSiteBundle/Resources/config/routing.yml"
+    prefix:   /
+

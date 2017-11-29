@@ -1,0 +1,37 @@
+{% spaceless %}
+<div id="{{ tab_id }}">
+  <form id="announcement_form" action="{{ action }}" method="post" class="gostedu-api" gostedu-api="{api:'ui.ajax_form'}" novalidate {{ form_enctype(form) }}>
+    <table class="general_form">
+      <caption>{{ title }}</caption>
+      <tbody>
+        <tr>
+          <td><label>标题:</label></td>
+          <td>{{ form_widget(form.title, { 'attr': {'class': 'validate[required]'} }) }}</td>
+        </tr>
+        <tr>
+          <td><label>关键字:</label></td>
+          <td>{{ form_widget(form.keywords) }}</td>
+        </tr>
+        <tr>
+          <td><label>作者:</label></td>
+          <td>{{ form_widget(form.author) }}</td>
+        </tr>
+        <tr>
+          <td><label>内容:</label></td>
+          <td>{{ form_widget(form.content, { 'attr': {'class': 'validate[required]'} }) }}</td>
+        </tr>
+      </tbody>
+    </table>
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    <div class="dialog_toolbar">
+      <button type="submit" class="button_save">保存</button>
+      <button type="button" class="button_cancel gostedu-api" gostedu-api="{api:'ui.close_dialog'{% if not close_dialog %},args:{bind:'click'}{% endif %}}">取消</button>
+      {% if is_permitted('announcement', 8) and announcement%}
+      <button type="button" class="button_delete gostedu-api" gostedu-api="{api:'cp.call_action',args:{confirm:'确定删除该公告?',action:'{{ path('gsm_announcement_del', { id: announcement.id }) }}',close_dialog:true}}">删除</button></div>
+      {% endif %}
+    {{ form_rest(form) }}
+  </form>
+</div>
+{% endspaceless %}

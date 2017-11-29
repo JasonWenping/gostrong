@@ -1,0 +1,32 @@
+{% spaceless %}
+<div id="{{ tab_id }}">
+  <form id="navigation_form" action="{{ action }}" method="post" class="gostedu-api" gostedu-api="{api:'ui.ajax_form'}" novalidate>
+    <table class="general_form">
+      <caption>{{ title }}</caption>
+      <tbody>
+        <tr>
+          <td><label>导航位关键字:</label></td>
+          <td>{{ form_widget(navigation_form.key, { 'attr': {'class': 'validate[required]'} }) }}</td>
+        </tr>
+        <tr>
+          <td><label>导航位名称:</label></td>
+          <td>{{ form_widget(navigation_form.name, { 'attr': {'class': 'validate[required]'} }) }}</td>
+        </tr>
+        {% if error %}
+        <tr>
+          <td colspan="2">{{ error }}</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+    <div class="dialog_toolbar">
+      <button type="submit" class="button_save">保存</button>
+      <button type="button" class="button_cancel gostedu-api" gostedu-api="{api:'ui.close_dialog'{% if not close_dialog %},args:{bind:'click'}{% endif %}}">取消</button>
+      {% if navigation and deleteable %}
+      <button type="button" class="button_delete gostedu-api" 
+        gostedu-api="{api:'cp.call_action',args:{confirm:'确定删除此导航位?',action:'{{ path('gsm_navigation_delete', { id: navigation.id }) }}',close_dialog:true}}">删除</button></div>
+      {% endif %}
+    {{ form_rest(navigation_form) }}
+  </form>
+</div>
+{% endspaceless %}

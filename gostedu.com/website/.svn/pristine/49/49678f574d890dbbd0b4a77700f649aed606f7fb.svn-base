@@ -1,0 +1,7 @@
+parameters:
+#    gost_site.example.class: Gost\Bundle\SiteBundle\Example
+
+services:
+#    gost_site.example:
+#        class: %gost_site.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

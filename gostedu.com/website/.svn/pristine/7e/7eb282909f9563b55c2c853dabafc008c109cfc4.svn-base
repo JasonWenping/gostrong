@@ -1,0 +1,433 @@
+@charset "utf-8";
+/* 简单流媒体
+   注意: 流媒体要求您删除 HTML 中媒体的高度和宽度属性
+   http://www.alistapart.com/articles/fluid-images/ 
+*/
+img, object, embed, video {
+	max-width: 100%;
+}
+/* IE 6 不支持最大宽度，因此默认为 100% 宽度 */
+.ie6 img {
+	width:100%;
+}
+body {
+	background-image:url(images/site-backgroud_img.jpg);
+	background-repeat:repeat-x repeat-y;
+	margin:0;
+
+}
+ul{
+	list-style:none;
+}
+a{
+		text-decoration:none;
+		color:#000;
+}
+@font-face{
+	font-family:'trends' ;
+	src:url(images/trends%20.ttf) format('truetype');
+	src:local('trends');
+}
+/*
+	Dreamweaver 流体网格属性
+	----------------------------------
+	dw-num-cols-mobile:		5;
+	dw-num-cols-tablet:		8;
+	dw-num-cols-desktop:	10;
+	dw-gutter-percentage:	25;
+	
+	灵感来自于 Ethan Marcotte 的“具有响应的 Web 设计” 
+	http://www.alistapart.com/articles/responsive-web-design
+	
+	和 Joni Korpi 的“黄金网格系统”
+	http://goldengridsystem.com/
+*/
+
+/* 移动设备布局: 480px 及更低。 */
+
+.gridContainer {
+	margin-left: auto;
+	margin-right: auto;
+	width: 87.36%;
+	padding-left: 1.82%;
+	padding-right: 1.82%;
+}
+#LayoutDiv1 {
+	clear: both;
+	float: left;
+	margin-left: 0;
+	width: 100%;
+	display: block;
+}
+
+/* 平板电脑布局: 481px 至 768px。样式继承自: 移动设备布局。 */
+
+@media only screen and (min-width: 481px) {
+.gridContainer {
+	width: 90.675%;
+	padding-left: 1.1625%;
+	padding-right: 1.1625%;
+}
+#LayoutDiv1 {
+	clear: both;
+	float: left;
+	margin-left: 0;
+	width: 100%;
+	display: block;
+}
+}
+
+/* 桌面电脑布局: 769px 至最高 1232px。样式继承自: 移动设备布局和平板电脑布局。 */
+
+@media only screen and (min-width: 769px) {
+.gridContainer {
+	width: 88.2%;
+	max-width: 1232px;
+	padding-left: 0.9%;
+	padding-right: 0.9%;
+	margin: auto;
+}
+#LayoutDiv1 {
+	clear: both;
+	float: left;
+	margin-left: 0;
+	width: 100%;
+	display: block;
+}
+}
+
+.site_Topbanner{
+	width:100%;
+	height:36px;
+	border-bottom:solid #d6001c 1px;
+	font:14 黑体;
+}
+.top_line_content{
+	width:100%;
+	max-width:1000px;
+	margin:0px auto;
+	padding-top:8px;
+}
+.top_line_content span{
+	color:#d6001c; font-size:18px;
+}
+.top_line_content span1{
+	font:宋体; font-size:12px; display:block; float:right; margin-top:5px;
+}
+.top_line_content span1 a:hover{ color:#C00;}
+.top_logo
+{
+	height:95px;
+	width:100%;
+	max-width:1000px;
+	margin:0 auto;
+}
+.logo
+{
+	padding-top:15px;
+	width:23%;
+	float:left;
+}
+#nav{
+	font-family:trends;
+	font-size:16px;
+	width:77%;
+	height:61px;
+	float:left;
+	padding-top:34px;
+}
+#nav ul{
+	margin:0;
+	list-style:none;
+}
+#nav li a{
+	width:85px;
+	height:61px;
+	display:block;
+	text-align:center;
+	float:right;
+	border-right:1px #999 solid;
+	line-height:65px;
+}
+#nav li a:hover
+{
+	width:85px;
+	height:61px;
+	display:block;
+	background:#d4001a;
+	color:#FFF;
+}
+#nav li a:visite{
+	background:#d4001a;
+	color:#FFF;
+    width:85px;
+	height:61px;
+	display:block;
+}
+
+
+#picShow{
+	width:100%;
+	height:362px;
+	background-color:#14965e;
+}
+
+#middle
+{
+	max-width:1000px;
+	width:100%;
+	margin:0 auto;
+}
+.title_pic{
+	margin:42px auto 0 auto;
+	width:284px;
+}
+.question_nvs{
+	margin-top:38px;
+}
+.question_word{
+	margin-top:30px;
+}
+.question_content{
+	width:240px;
+	float:left;
+	margin-left:3px;
+	margin-right:87px;
+	font-size:12px;
+	line-height:18px;
+	color:#888;
+}
+.nvs_shadow_line{
+	margin-top:48px;
+}
+
+.middle_news{
+	margin-top:38px;
+	color:#828282;
+	font-size:12px;
+}
+.news
+{
+	width:343px;
+	height:284px;
+	margin-right:37px;
+	float:left;
+}
+.news_title
+{
+	width:343px;
+	height:21px;
+}
+.news_title h1{
+	font-size:16px;
+	font-family:Arial, Helvetica, sans-serif;
+	width:100px;
+	float:left;
+	margin:0;
+}
+.more_link{
+	float:right;
+	width:40px;
+	border:none;
+}
+.news_list ul
+{
+	list-style:none;
+	margin:0;
+	padding:0;
+	line-height:30px;
+}
+.news_seperator{
+	height:233px;
+	width:4px;
+	background-image:url(images/site-news_seperator_line.jpg);
+	margin-right:37px;
+	margin-top:25px;
+	float:left;
+}
+.students_share{
+	width:343px;
+	height:284px;
+	float:left;
+	margin-right:20px;
+}
+.three_bottom{
+	width:209px;
+	height:280px;
+	background-image:url(images/site-login_bg.gif);
+	background-repeat:repeat-x;
+	float:left;
+	border:#CCC 1px dotted;
+	text-align:center;
+}
+.three_bottom img{
+	margin:25px 0;
+}
+
+
+.middle_left_banner{
+	width:17%;
+	border:#d2d2d2 solid 1px;
+	background-image:url(images/site-lanmu_bg_line.gif);
+	background-repeat:repeat-x;
+	float:left;
+	margin-top:13px;
+}
+.middle_left_banner ul{
+	margin:20px 0px 9px 0;
+	padding:0px;
+	text-align:center;
+	line-height:37px;
+}
+.middle_left_banner a:hover{
+	color:#C30;
+	font-weight:bolder;
+}
+.middle_right_banner{
+	width:80%;
+	min-height:424px;
+	margin-left:22px;
+	background-color:#FFF;
+	float:left;
+	border:#d2d2d2 solid 1px;
+	margin-top:13px;
+}
+.middle_right_title{
+	width:100%;
+	height:35px;
+	background-image:url(site-images/title_bg_line.gif);
+	background-repeat:repeat-x;
+	border-bottom:#F00 solid 1px;
+}
+.middle_right_title span
+{
+	display:block;
+	padding:10px;
+	font-weight:bold;
+}
+.middle_content{
+	font-size:12px;
+	line-height:25px;
+	margin:20px;
+}
+.middle_content h2{
+	text-align:center;
+}
+.content_info{
+	text-align:center;
+}
+
+
+
+.middle_leftside{
+	width:45%;
+	height:375px;
+	margin:13px 30px 0 0;
+	line-height:20px;
+	float:left;
+}
+.first_message{
+	float:left;
+	width:64%;
+	margin-left:10px;
+}
+.middle_leftside h3
+{
+	color:#c40000;
+	font-size:16px;
+	margin:5px 0 10px 0;
+}
+.middle_leftside span{
+	font-size:14px;
+}
+.middle_leftside img{
+	float:left;
+	margin-top:5px;
+	margin-right:5px;
+}
+.activity_list{
+	width:100%;
+	margin-top:15px;
+	border-top:dotted #9D9D9D 1px;
+	border-bottom:dotted #9D9D9D 1px;
+	line-height:25px;
+	font-size:13px;
+	color:#828282;
+}
+.activity_list ul{
+	margin:10px 0 10px 5px;
+	padding:0px;
+}
+
+.images_position{
+	width:30%;
+	margin:40px auto;
+	text-align:center;
+}
+.images_position img{
+	border:none;
+}
+.images_list{
+	width:100%;
+	height:150px;
+	margin:15px 0;
+	text-align:center;
+	color:#aaa;
+}
+.three_course{
+	width:100%;
+	margin:30px auto;
+	text-align:center;
+}
+.three_course img{
+	margin-right:23px;
+}
+.zixun_table{
+	line-height:30px;
+	font-size:12px;
+	text-align:center;
+	width:100%;
+	background-color:#E4E4E4;
+	border:#CCC 1px solid;
+}
+
+
+
+
+
+.friendship_link{
+	margin-top:40px;
+}
+
+
+
+
+/*******************************底部栏目********************************/
+#foot_banner{
+	margin-top:30px;
+	width:100%;
+	height:250px;
+	background-color:#565656;
+	}
+.foot_banner_line{
+	width:100%;
+	height:4px;
+	background-image:url(site-images/under_line.gif);
+	background-repeat:repeat-x;
+}
+.foot_info{
+	max-width:1000px;
+	margin:10px auto;
+	font-size:12px;
+	line-height:20px;
+	color:#e1e1e1;
+}
+.foot_info_part{
+	float:left;
+	margin-right:45px;
+}
+/*******************************   ********************************/
+.float_Clear
+{
+	clear:both;
+}

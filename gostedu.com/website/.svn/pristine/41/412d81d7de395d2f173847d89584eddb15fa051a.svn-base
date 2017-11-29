@@ -1,0 +1,23 @@
+{% block content %}
+<div class="listTable">
+	<table cellspacing="0" cellpadding="0">
+		<tr class="listTitle">
+			<td><input type="checkbox" /></td>
+			<td width="8%">编号</td>
+			<td width="30%">标题</td>
+			<td width="10%">发布时间</td>
+			<td width="22%">操作</td>
+		</tr>
+	{% for item in anounce_list %}
+		<tr>
+			<td><input type="checkbox" id="{{ item.id }}"/></td>
+			<td>{{ item.id }}</td>
+			<td>{{ item.title }}</td>
+			<td>{{ item.senddate }}</td>
+			<td><a href="{{  }}">修改</a> | <a href="{{  }}">删除</a></td>
+		</tr>
+	{% endfor %}
+	</table>
+<div class="page_Turn">{{ pagination }}</div>
+</div>
+{% endblock %}

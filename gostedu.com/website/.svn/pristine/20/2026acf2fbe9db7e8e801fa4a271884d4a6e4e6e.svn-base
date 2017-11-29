@@ -1,0 +1,36 @@
+# 内容管理
+gsm_content_news:
+    pattern: /news
+    defaults: { _controller: "GostSiteManagerBundle:News:list" }
+
+gsm_content_news_add:
+    pattern: /news/add
+    defaults: { _controller: "GostSiteManagerBundle:News:add"}
+
+gsm_content_news_edit:
+    pattern: /news/edit/{id}
+    defaults: { _controller: "GostSiteManagerBundle:News:edit"}
+    requirements: { id: \d+ }
+
+gsm_content_news_del:
+    pattern: /news/del/{id}
+    defaults: { _controller: "GostSiteManagerBundle:News:del"}
+    requirements: { id: \d+ }
+
+gsm_content_channel:
+    pattern: /channel
+    defaults: { _controller: "GostSiteManagerBundle:Channel:list" }
+
+gsm_content_channel_add:
+    pattern: /channel/add
+    defaults: { _controller: "GostSiteManagerBundle:Channel:add"}
+
+gsm_content_channel_edit:
+    pattern: /channel/edit/{id}
+    defaults: { _controller: "GostSiteManagerBundle:Channel:edit"}
+    requirements: { id: \d+ }
+
+gsm_content_channel_del:
+    pattern: /channel/del/{id}
+    defaults: { _controller: "GostSiteManagerBundle:Channel:del"}
+    requirements: { id: \d+ }

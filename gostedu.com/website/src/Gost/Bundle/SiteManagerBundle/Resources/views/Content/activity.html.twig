@@ -1,0 +1,57 @@
+{% spaceless %}
+<div id="{{ tab_id }}">
+  <form id="activity_form" action="{{ action }}" method="post" class="gostedu-api" gostedu-api="{api:'ui.ajax_form'}" novalidate {{ form_enctype(form) }}>
+    <table class="general_form">
+      <caption>{{ title }}</caption>
+      <tbody>
+        <tr>
+          <td><label>标题:</label></td>
+          <td>{{ form_widget(form.title, { 'attr': {'class': 'validate[required]'} }) }}</td>
+        </tr>
+        <tr>
+          <td><label>缩略图:</label></td>
+          <td>{{ form_widget(form.thumbnail) }}</td>
+        </tr>
+        <tr>
+          <td><label>来源:</label></td>
+          <td>{{ form_widget(form.source) }}</td>
+        </tr>
+        <tr>
+          <td><label>作者:</label></td>
+          <td>{{ form_widget(form.author) }}</td>
+        </tr>
+        <tr>
+          <td><label>活动目的:</label></td>
+          <td>{{ form_widget(form.aim) }}</td>
+        </tr>
+        <tr>
+          <td><label>起始时间:</label></td>
+          <td>{{ form_widget(form.start_time|date('Y-m-d H:i')) }}</td>
+        </tr>
+        <tr>
+          <td><label>截止时间:</label></td>
+          <td>{{ form_widget(form.temination_time|date('Y-m-d H:i')) }}</td>
+        </tr>
+        <tr>
+          <td><label>活动规则:</label></td>
+          <td>{{ form_widget(form.rule) }}</td>
+        </tr>
+        <tr>
+          <td><label>内容:</label></td>
+          <td>{{ form_widget(form.content, { 'attr': {'class': 'validate[required]'} }) }}</td>
+        </tr>
+      </tbody>
+    </table>
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    <div class="dialog_toolbar">
+      <button type="submit" class="button_save">保存</button>
+      <button type="button" class="button_cancel gostedu-api" gostedu-api="{api:'ui.close_dialog'{% if not close_dialog %},args:{bind:'click'}{% endif %}}">取消</button>
+      {% if is_permitted('content_activity', 8) and activity%}
+      <button type="button" class="button_delete gostedu-api" gostedu-api="{api:'cp.call_action',args:{confirm:'确定删除该活动?',action:'{{ path('gsm_content_activity_del', { id: activity.id }) }}',close_dialog:true}}">删除</button></div>
+      {% endif %}
+    {{ form_rest(form) }}
+  </form>
+</div>
+{% endspaceless %}

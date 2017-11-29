@@ -1,0 +1,37 @@
+{% extends 'GostSiteBundle::layout.html.twig' %}
+{% block main %}
+<hr noshade="noshade" style="height:1px; width:100%; margin:0; color:#C30;" />
+<div id="middle">
+	<div><img src="{{ asset('images/site-activity_banner.jpg') }}" /></div>
+	<div class="middle_leftside"> <img src="{{ asset(top_activity.thumbnail) }}" />
+		<div><img src="{{ asset('upload/00000pic11.jpg') }}" /></div>
+		<div class="first_message">
+			<h3>{{ top_activity.title }}</h3>
+			<span>{{ top_activity.title|length=200 }}......</span></div>
+		<div class="float_Clear"></div>
+		<div class="activity_list">
+			<ul>
+			{% for item in recent_activity %}
+				<li><img src="{{ asset(item.thumbnail) }}" style="margin-right:4px;" /><a href="{{ item.href }}">{{ item.title }}<span class="date">{{ item.date }}<span></a></li>
+			{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="middle_leftside"> <img src="{{ asset('images/site-past_title.jpg') }}" />
+		<div>
+		{% for item in past_activity_top3 %}
+			<img src="{{ asset(item.thumbnail) }}" />
+		{% endfor %}
+		</div>
+		<div class="float_Clear"></div>
+		<div class="activity_list">
+			<ul>
+			{% for item in past_activity %}
+				<li><img src="{{ asset(item.thumbnail) }}" style="margin-right:4px;" /><a href="{{ item.href }}">{{ item.title }}<span class="date">{{ item.date }}<span></a></li>
+			{% endfor %}
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="float_Clear"></div>
+{% endblock %}

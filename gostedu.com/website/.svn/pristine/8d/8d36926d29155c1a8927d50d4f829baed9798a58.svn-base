@@ -1,0 +1,25 @@
+gsm_homepage:
+    path:     /
+    defaults: { _controller: "GostSiteManagerBundle:Default:index" }
+
+gsm_login:
+    path:     /login
+    defaults: { _controller: "GostSiteManagerBundle:Secure:login" }
+
+gsm_login_check:
+    path:     /login_check
+
+gsm_logout:
+    path:     /logout
+
+gsm_system:
+    resource: routing/sys.yml
+    prefix: /sys
+
+gsm_content:
+    resource: routing/content.yml
+    prefix: /content
+
+gsm_navigation:
+    resource: routing/navigation.yml
+    prefix: /navigation

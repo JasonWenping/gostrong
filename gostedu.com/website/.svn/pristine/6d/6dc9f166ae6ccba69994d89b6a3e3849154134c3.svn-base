@@ -1,0 +1,23 @@
+<?php
+
+namespace Gost\Bundle\SiteManagerBundle\Controller;
+
+use Gost\Bundle\SiteManagerBundle\Component\MBaseController;
+
+/**
+ * 默认控制器
+ * 
+ * @author devy
+ *
+ */
+class DefaultController extends MBaseController
+{
+	public function getCurrentFunc() {
+		return 'default';
+	}
+	
+    public function indexAction()
+    {
+        return $this->render('GostSiteManagerBundle:Default:index.html.twig');
+    }
+}

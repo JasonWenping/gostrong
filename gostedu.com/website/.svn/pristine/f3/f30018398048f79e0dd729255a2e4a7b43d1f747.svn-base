@@ -1,0 +1,19 @@
+{% extends 'GostSiteBundle::layout.html.twig' %}
+{% block main %}
+<hr noshade="noshade" style="height:1px; width:100%; margin:0; color:#C30;" />
+<div id="middle">
+	<div><img src="{{ asset('images/site-share_banner.jpg') }}"  /></div>
+	<div class="images_position">
+		<h1>总有一个收获属于你</h1>
+	</div>
+	<div class="three_course"> 
+		<img src="{{ asset('images/images/site-shouhuo_pic1.png') }}" />
+		<img src="{{ asset('images/images/site-shouhuo_pic2.png') }}" />
+		<img src="{{ asset('images/images/site-shouhuo_pic3.png') }}" />
+		<img src="{{ asset('images/images/site-shouhuo_pic4.png') }}" /> 
+	</div>
+	<div><img src="{{ asset('images/images/site-line.jpg') }}" /></div>
+	<div class="images_list"> </div>
+</div>
+<div class="float_Clear"></div>
+{% endblock %}

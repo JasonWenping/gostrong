@@ -1,0 +1,15 @@
+{% extends 'GostSiteBundle::layout.html.twig' %}
+{% block main %}
+<hr noshade="noshade" style="height:1px; width:100%; margin:0; color:#C30;" />
+<div id="middle">
+	<div><img src="{{ asset('images/site-curriculum_banner.jpg') }}"  /></div>
+	<div><img src="{{ asset('images/site-line.jpg') }}" /></div>
+	<div class="images_position"><h1>三大核心课程体系</h1></div>
+	<div class="three_course"><img src="{{ asset('images/site-nvs_pic.jpg') }}" /><img src="{{ asset('images/site-nuc_pic.jpg') }}" /><img src="{{ asset('images/site-ncb_pic.jpg') }}" /></div>
+	<div><img src="{{ asset('images/site-line.jpg') }}" /></div>
+	<div>
+	<img src="{{ asset('images/site-3specific.jpg') }}" />
+	</div>
+</div>
+<div class="float_Clear"></div>
+{% endblock %}

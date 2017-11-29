@@ -1,0 +1,34 @@
+gsm_navigation_management:
+    pattern: /navigations
+    defaults: { _controller: "GostSiteManagerBundle:Navigation:navigations" }
+
+gsm_site_navigation: # alias
+    pattern: /navigations
+
+gsm_navigation_register:
+    pattern: /register
+    defaults: { _controller: "GostSiteManagerBundle:Navigation:navigation", register: true, id: null }
+
+gsm_navigation_edit:
+    pattern: /{id}/edit
+    defaults: { _controller: "GostSiteManagerBundle:Navigation:navigation", register: false }
+    requirements: { id: \d+ }
+
+gsm_navigation_delete:
+    pattern: /{id}/delete
+    defaults: { _controller: "GostSiteManagerBundle:Navigation:navigation", register: false, delete: true }
+    requirements: { id: \d+, _method: POST }
+
+gsm_navigation_menu_register:
+    pattern: /menu/register
+    defaults: { _controller: "GostSiteManagerBundle:Navigation:menu", register: true, id: null }
+
+gsm_navigation_menu_edit:
+    pattern: /menu/{id}/edit
+    defaults: { _controller: "GostSiteManagerBundle:Navigation:menu", register: false }
+    requirements: { id: \d+ }
+
+gsm_navigation_menu_delete:
+    pattern: /menu/{id}/delete
+    defaults: { _controller: "GostSiteManagerBundle:Navigation:menu", register: false, delete: true }
+    requirements: { id: \d+, _method: POST }

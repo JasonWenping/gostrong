@@ -1,0 +1,159 @@
+<?php
+
+namespace Gost\Bundle\SiteManagerBundle\Controller;
+
+use Gost\Bundle\SiteManagerBundle\Component\MBaseController;
+use Gost\Bundle\BaseBundle\Entity\Cooperator;
+use Gost\Bundle\BaseBundle\Form\CooperatorType;
+
+/**
+ *
+ * @author stalker
+ *        
+ */
+class CooperatorController extends MBaseController {
+	
+	/**
+	 * @see \Gost\Bundle\SiteManagerBundle\Component\MBaseController::getCurrentFunc()
+	 */
+	public function getCurrentFunc() {
+		return 'cooperator';
+	}
+
+	/**
+	 * 合作伙伴列表
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+	public function listAction() {
+		$request = $this->getRequest();
+		$em = $this->getDoctrine()->getManager();
+		$list = $em->getRepository('GostBaseBundle:Cooperator')->findAll();
+		return $this->smartRender('GostSiteManagerBundle:Cooperator:cooperator_list.html.twig', '合作伙伴列表', array(
+				'tab_id' => $this->getCurrentFunc(),
+				'cooperator_list' => $list
+		));
+	}
+
+	/**
+	 * 添加合作伙伴
+	 */
+	public function addAction() {
+
+		if ($this->isAllowed('cooperator', 2)) {
+			$request = $this->getRequest();
+			$em = $this->getDoctrine()->getManager();
+			$action = $this->generateUrl('gsm_cooperator_add');
+			$cootype_hash = $em->getRepository('GostBaseBundle:Cootype')->findAll();
+			$form = $this->createForm(new CooperatorType($cootype_hash));
+			$title = '添加合作伙伴';
+			$error = null;
+			$close_dialog = false;
+
+			if ($request->isMethod('POST') && $form->bind($request)->isValid()) {
+				$data = $form->getData();
+				$logo = $form['logo']->getData();
+				try {
+					if ($logo) {
+						$logo_dir = './web/upload/cooperator_logo/';
+						$logo_name = time() . '.' . $logo->guessExtension();
+						$logo->move($logo_dir, $logo_name);
+					}
+					$cooperator_entity = new Cooperator();
+					$cooperator_entity->setName($data['name'])
+						->setLogo($logo_dir . $logo_name)
+						->setWebsite($data['website'])
+						->setIntroduction($data['introduction'])
+						->setType($data['type'])
+						->flush($em);
+
+					$close_dialog = true;
+				} catch (\Exception $ex) {
+					$error = $ex->getMessage();
+				}
+			}
+			return $this->smartRender('GostSiteManagerBundle:Cooperator:cooperator_form.html.twig', $title, array(
+					'tab_id' => $this->getCurrentFunc() . '_add',
+					'title' => $title,
+					'error' => $error,
+					'action' => $action,
+					'close_dialog' => $close_dialog,
+					'form' => $form->createView()
+			));
+		} else {
+			return $this->jsonRender(array('error'=>true, 'message'=>'无权进行添加。'));
+		}
+	}
+
+	/**
+	 * 修改合作伙伴
+	 */
+	public function editAction($id) {
+		if ($this->isAllowed('cooperator', 4)) {
+			$request = $this->getRequest();
+			$em = $this->getDoctrine()->getManager();
+			$cooperator = $em->getRepository('GostBaseBundle:Cooperator')->find($id);
+			$action = $this->generateUrl('gsm_cooperator_edit');
+			$cootype_hash = $em->getRepository('GostBaseBundle:Cootype')->findAll();
+			$form = $this->createForm(new CooperatorType($cootype_hash));
+			$title = '修改合作伙伴';
+			$error = null;
+			$close_dialog = false;
+
+			if ($request->isMethod('POST') && $form->bind($request)->isValid()) {
+				$data = $form->getData();
+				$logo = $form['logo']->getData();
+				try {
+					if ($logo) {
+						$logo_dir = './web/upload/cooperator_logo/';
+						$logo_name = time() . '.' . $logo->guessExtension();
+						$logo->move($logo_dir, $logo_name);
+						unlink($cooperator->getThumbnail());
+						$cooperator->setLogo($logo_dir . $logo_name);
+					}
+					$cooperator->setName($data['name'])
+						->setWebsite($data['website'])
+						->setIntroduction($data['introduction'])
+						->setType($data['type'])
+						->flush($em);
+
+					$close_dialog = true;
+				} catch (\Exception $ex) {
+					$error = $ex->getMessage();
+				}
+			}
+			return $this->smartRender('GostSiteManagerBundle:Cooperator:cooperator_form.html.twig', $title, array(
+					'tab_id' => $this->getCurrentFunc() . '_edit',
+					'title' => $title,
+					'error' => $error,
+					'action' => $action,
+					'close_dialog' => $close_dialog,
+					'form' => $form->createView()
+			));
+		} else {
+			return $this->jsonRender(array('error'=>true, 'message'=>'无权进行修改。'));
+		}
+	}
+
+	/**
+	 * 删除合作伙伴
+	 */
+	public function delAction($id) {
+		if ($this->isAllowed('cooperator', 8)) {
+			try {
+				$em = $this->getDoctrine()->getManager();
+				if ($cooperator = $em->getRepository('GostBaseBundle:Cooperator')->find($id)) {
+					unlink($cooperator->getThumbnail());
+					return $cooperator->remove($em);
+				} else {
+					throw new \Exception('该合作伙伴不存在。');
+				}
+				return $this->jsonRender(array('success'=>true, 'message'=>'合作伙伴已删除'));
+			} catch (\Exception $ex) {
+				return $this->jsonRender(array('error'=>true, 'message'=>$ex->getMessage()));
+			}
+		} else {
+			return $this->jsonRender(array('error'=>true, 'message'=>'无权进行删除'));
+		}
+	}
+}

@@ -1,0 +1,18 @@
+# 系统内容管理
+gsm_content_news:
+    pattern: /groups
+    defaults: { _controller: "GostSiteManagerBundle:News:news" }
+
+gsm_content_news_addnews:
+    pattern: /news/register
+    defaults: { _controller: "GostSiteManagerBundle:News:news", register: true, id: null }
+
+gsm_content_news_editnews:
+    pattern: /news/{id}
+    defaults: { _controller: "GostSiteManagerBundle:News:news", register: false }
+    requirements: { id: \d+ }
+
+gsm_content_news_delnews:
+    pattern: /news/{id}/delete
+    defaults: { _controller: "GostSiteManagerBundle:News:news", register: false, delete: true }
+    requirements: { id: \d+ }

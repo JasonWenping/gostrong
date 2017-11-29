@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry kind="src" path="gostedu.com/website/app"/>
+	<buildpathentry kind="src" path="gostedu.com/website/bin"/>
+	<buildpathentry kind="src" path="gostedu.com/website/src/Acme/DemoBundle"/>
+	<buildpathentry kind="src" path="gostedu.com/website/src/Gost/Bundle/BaseBundle"/>
+	<buildpathentry kind="src" path="gostedu.com/website/src/Gost/Bundle/SiteBundle"/>
+	<buildpathentry kind="src" path="gostedu.com/website/src/Gost/Bundle/SiteManagerBundle"/>
+	<buildpathentry kind="src" path="gostedu.com/website/src/Gost/Common/Utils"/>
+	<buildpathentry kind="src" path="gostedu.com/website/vendor"/>
+	<buildpathentry kind="src" path="gostedu.com/website/web"/>
+	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+</buildpath>

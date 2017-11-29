@@ -1,0 +1,62 @@
+# 系统功能设置
+gsm_sys_functions:
+    pattern: /groups
+    defaults: { _controller: "GostSiteManagerBundle:Function:groups" }
+
+gsm_sys_functions_addgroup:
+    pattern: /group/register
+    defaults: { _controller: "GostSiteManagerBundle:Function:group", register: true, id: null }
+
+gsm_sys_functions_editgroup:
+    pattern: /group/{id}
+    defaults: { _controller: "GostSiteManagerBundle:Function:group", register: false }
+    requirements: { id: \d+ }
+
+gsm_sys_functions_delgroup:
+    pattern: /group/{id}/delete
+    defaults: { _controller: "GostSiteManagerBundle:Function:group", register: false, delete: true }
+    requirements: { id: \d+, _method: POST }
+
+gsm_sys_functions_managefunc:
+    pattern: /functions/{group}
+    defaults: { _controller: "GostSiteManagerBundle:Function:functions" }
+    requirements: { group: \d+ }
+
+gsm_sys_functions_regfunc:
+    pattern: /function/register/{group}
+    defaults: { _controller: "GostSiteManagerBundle:Function:function", register: true, id: null }
+    requirements: { group: \d+ }
+
+gsm_sys_functions_editfunc:
+    pattern: /function/{group}/{id}
+    defaults: { _controller: "GostSiteManagerBundle:Function:function", register: false }
+    requirements: { group: \d+, id: \d+ }
+
+gsm_sys_functions_delfunc:
+    pattern: /function/{id}/delete
+    defaults: { _controller: "GostSiteManagerBundle:Function:function", register: false, delete: true }
+    requirements: { id: \d+, _method: POST }
+
+gsm_sys_functions_permission:
+    pattern: /function/{id}/permissions
+    defaults: { _controller: "GostSiteManagerBundle:Function:permission" }
+    requirements: { id: \d+ }
+
+gsm_sys_roles:
+    pattern: /roles
+    defaults: { _controller: "GostSiteManagerBundle:Role:roles" }
+
+gsm_sys_roles_register:
+    pattern: /role/register
+    defaults: { _controller: "GostSiteManagerBundle:Role:role", register: true, id: null }
+
+gsm_sys_roles_edit:
+    pattern: /role/{id}/edit
+    defaults: { _controller: "GostSiteManagerBundle:Role:role", register: false }
+    requirements: { id: \d+ }
+
+gsm_sys_roles_delete:
+    pattern: /role/{id}/delete
+    defaults: { _controller: "GostSiteManagerBundle:Role:role", register: false, delete: true }
+    requirements: { id: \d+, _method: POST }
+

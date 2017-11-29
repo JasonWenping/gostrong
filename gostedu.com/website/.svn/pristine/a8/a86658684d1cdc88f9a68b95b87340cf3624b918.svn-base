@@ -1,0 +1,34 @@
+/**
+ * 用户界面
+ * 
+ */
+
+;(function(window, $, undefined){
+	$.GosteduUI = function() {
+		this._isInited = false;
+	};
+	
+	$.GosteduUI.prototype = {
+			/// start
+
+			/**
+			 * api测试方法
+			 */
+			test: function(dispatcher, args) {
+				$(dispatcher).click(function(e){
+					alert(args.text ? args.text : 'Hello World');
+				});
+			},
+			
+			/// end
+			init: function(core) {
+				this.core = core;
+				this._isInited = true;
+			},
+			isInited: function() {
+				return this._isInited;
+			}
+	};
+	
+	$.extend($.Gostedu.plugins, { ui: new $.GosteduUI() });
+})(window, jQuery);

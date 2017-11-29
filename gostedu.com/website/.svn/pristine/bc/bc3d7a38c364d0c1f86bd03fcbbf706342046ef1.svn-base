@@ -1,0 +1,18 @@
+# 友情链接管理
+gsm_content_flink:
+    pattern: /flink
+    defaults: { _controller: "GostSiteManagerBundle:Flink:list" }
+
+gsm_content_flink_add:
+    pattern: /flink/add
+    defaults: { _controller: "GostSiteManagerBundle:Flink:add"}
+
+gsm_content_flink_edit:
+    pattern: /flink/edit/{id}
+    defaults: { _controller: "GostSiteManagerBundle:Flink:edit"}
+    requirements: { id: \d+ }
+
+gsm_content_flink_del:
+    pattern: /flink/del/{id}
+    defaults: { _controller: "GostSiteManagerBundle:Flink:del"}
+    requirements: { id: \d+ }

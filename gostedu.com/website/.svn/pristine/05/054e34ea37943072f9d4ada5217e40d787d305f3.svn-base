@@ -1,0 +1,293 @@
+<?php
+
+namespace Gost\Bundle\SiteManagerBundle\Command;
+
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Gost\Bundle\SiteManagerBundle\Entity\MRole;
+use Gost\Bundle\SiteManagerBundle\Entity\MUser;
+use Gost\Bundle\SiteManagerBundle\Entity\MFuncGroup;
+use Gost\Bundle\SiteManagerBundle\Entity\MFunc;
+use Gost\Bundle\SiteManagerBundle\Entity\MAction;
+use Gost\Bundle\SiteManagerBundle\Entity\MPermission;
+
+/**
+ * 初始化命令
+ *
+ * @author devy
+ *        
+ */
+class InitCommand extends ContainerAwareCommand {
+	
+	/**
+	 * @see \Symfony\Component\Console\Command\Command::configure()
+	 */
+	protected function configure() {
+		$this->setName('gostedu:cp:init')
+				->setDescription('init gostedu control panel data');
+	}
+	
+	/**
+	 * @see \Symfony\Component\Console\Command\Command::execute()
+	 */
+	protected function execute(InputInterface $input, OutputInterface $output) {
+		$roles = $this->initRoles($input, $output);
+    	$this->initUsers($input, $output, $roles);
+    	$this->initCPFunctions($input, $output, $roles);
+	}
+
+	/**
+	 * 初始化用户角色
+	 *
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 */
+	private function initRoles(InputInterface $input, OutputInterface $output) {
+		$roles_integrated = array('ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN');	
+		$roles = array();
+		$em = $this->getContainer()->get('doctrine')->getManager();
+		$repos = $em->getRepository('GostSiteManagerBundle:MRole');
+		foreach ($roles_integrated as $name) {
+			if (!(($role = $repos->findOneBy(array('name'=>$name))) && ($role instanceof MRole))) {
+				$role = new MRole($name);
+				$em->persist($role);
+			}
+			$roles[$name] = $role;
+		}
+		$em->flush();
+		$output->writeln('integerated roles created');
+		return $roles;
+	}
+	
+	/**
+	 * 初始化用户
+	 *
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 */	
+	private function initUsers(InputInterface $input, OutputInterface $output, $roles) {
+		$users_integrated = array(
+				'sa'=>array('password'=>'gostedu', 'roles'=>array('ROLE_SUPER_ADMIN')),
+				'admin'=>array('password'=>'gostedu', 'roles'=>array('ROLE_ADMIN')),
+				'test'=>array('password'=>'gostedu', 'roles'=>array('ROLE_USER')),
+		);
+
+		$em = $this->getContainer()->get('doctrine')->getManager();
+		$repos = $em->getRepository('GostSiteManagerBundle:MUser');
+	
+		foreach ($users_integrated as $username=>$userinfo) {
+			if (!(($user = $repos->findOneBy(array('username'=>$username))) && ($user instanceof MUser))) {
+				$user = new MUser();
+	
+				$user->setUsername($username)
+						->setCreatedAt(time())
+						->setSalt(md5(uniqid('gostedu')));
+
+				$factory = $this->getContainer()->get('security.encoder_factory');
+				$encoder = $factory->getEncoder($user);
+				$password = $encoder->encodePassword($userinfo['password'], $user->getSalt());
+				
+				$user->setPassword($password);
+				foreach ($userinfo['roles'] as $role) {
+					$user->addUserRole($roles[$role]);
+				}
+				$em->persist($user);
+			}
+		}
+		$em->flush();
+		$output->writeln('integerated users created');
+	}
+	
+	/**
+	 * @todo 初始化CP功能列表
+	 *
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 */
+	private function initCPFunctions(InputInterface $input, OutputInterface $output, $roles) {
+	
+		$groups_integrated = array(
+				'content_management' => '内容管理',
+				'platform_settings' => '系统设定',
+				'personal_settings' => '个人设定',
+	
+		);
+	
+		$functions_integrated = array(
+				'content_management' => array(
+						'content_management' => '内容管理',
+						'menu_management' => '导航管理',
+				),
+				'platform_settings' => array(
+						'sys_runtime_options' => '运行参数设定',
+						'sys_functions' => '系统功能设定',
+						'sys_roles' => '角色管理',
+						'sys_users' => '用户管理',
+						'sys_permissions' => '权限设定',
+				),
+				'personal_settings' => array(
+						'user_profile' => '个人资料修改',
+						'user_password' => '修改登录密码',
+				),
+	
+		);
+	
+		$actions_integrated = array(
+				'content_management' => array(
+						1 => '查看',
+						2 => '修改',
+						4 => '新增',
+						8 => '删除',
+				),
+				'menu_management' => array(
+						1 => '查看',
+						2 => '修改',
+						4 => '新增',
+						8 => '删除',
+				),
+				'sys_runtime_options' => array(
+						1 => '查看',
+						2 => '修改',
+						4 => '新建',
+						8 => '删除',
+				),
+				'sys_functions' => array(
+						1 => '查看',
+						2 => '修改',
+						4 => '新建',
+						8 => '删除',
+						16=> '权限设置',
+				),
+				'sys_roles' => array(
+						1 => '查看',
+						2 => '修改',
+						4 => '新建',
+						8 => '删除',
+				),
+				'sys_users' => array(
+						1 => '查看',
+						2 => '修改',
+						4 => '新建',
+						8 => '删除',
+				),
+				'sys_permissions' => array(
+						1 => '查看',
+						2 => '修改',
+				),
+				'user_profile' => array(
+						1 => '查看',
+						2 => '修改',
+				),
+				'user_password' => array(
+						1 => '修改',
+				),
+	
+		);
+	
+		$permissions_integrated = array(
+				'content_management' => array(
+						'ROLE_ADMIN' => 15,
+						'ROLE_SUPER_ADMIN' => 1,
+				),
+	
+				'menu_management' => array(
+						'ROLE_ADMIN' => 1,
+						'ROLE_SUPER_ADMIN' => 15,
+				),
+	
+				'sys_runtime_options' => array(
+						'ROLE_SUPER_ADMIN' => 15,
+				),
+	
+				'sys_functions' => array(
+						'ROLE_SUPER_ADMIN' => 31,
+				),
+	
+				'sys_roles' => array(
+						'ROLE_SUPER_ADMIN' => 15,
+				),
+	
+				'sys_permissions' => array(
+						'ROLE_SUPER_ADMIN' => 15,
+				),
+	
+				'user_profile' => array(
+						'ROLE_ADMIN' => 3,
+						'ROLE_SUPER_ADMIN' => 3,
+				),
+	
+				'user_password' => array(
+						'ROLE_ADMIN' => 1,
+						'ROLE_SUPER_ADMIN' => 1,
+				),
+		);
+	
+		$em = $this->getContainer()->get('doctrine')->getManager();
+		$repos_group = $em->getRepository('GostSiteManagerBundle:MFuncGroup');
+		$repos_func = $em->getRepository('GostSiteManagerBundle:MFunc');
+		$repos_action = $em->getRepository('GostSiteManagerBundle:MAction');
+		$repos_permis = $em->getRepository('GostSiteManagerBundle:MPermission');
+	
+		$groups = array();
+		foreach ($groups_integrated as $key => $title) {
+			if (!(($group = $repos_group->findOneBy(array('key'=>$key))) && ($group instanceof MFuncGroup))) {
+				$group = new MFuncGroup();
+				$group->setKey($key)
+						->setTitle($title);
+				$em->persist($group);
+			}
+			$groups[$key] = $group;
+		}
+
+		$functions = array();
+		foreach ($functions_integrated as $group_key => $funcs) {
+			foreach ($funcs as $key => $title) {
+				if (!(($function = $repos_func->findOneBy(array('key'=>$key))) && ($function instanceof MFunc))) {
+					$function = new MFunc();
+					$function->setGroup($groups[$group_key])
+							->setKey($key)
+							->setTitle($title)
+							->setIsMenuItem(true)
+							->setRoute('gsm_' . $key);
+					$em->persist($function);
+				}
+				$functions[$key] = $function;
+			}
+		}
+
+		$actions = array();
+		foreach ($actions_integrated as $func_key => $values) {
+			foreach ($values as $code => $title) {
+				if (!(($action = $repos_action->findOneBy(array('code'=>$code, 'func'=>$functions[$func_key]->getId()))) && ($action instanceof MAction))) {
+					$action = new MAction();
+					$action->setFunc($functions[$func_key])
+							->setCode($code)
+							->setTitle($title);
+					$em->persist($action);
+				}
+				array_push($actions, $action);
+			}
+		}
+
+		$permissions = array();
+		foreach ($permissions_integrated as $func_key => $values) {
+			foreach ($values as $role => $code) {
+				if (!(($permission = $repos_permis
+								->findOneBy(array('function'=>$functions[$func_key]->getId(), 'targetType'=>MPermission::TARGET_TYPE_ROLE, 'targetId'=>$roles[$role]->getId())))
+						&& ($permission instanceof MPermission))) {
+					$permission = new MPermission();
+					$permission->setFunction($functions[$func_key])
+							->setPermissions($code)
+							->setTargetId($roles[$role]->getId())
+							->setTargetType(MPermission::TARGET_TYPE_ROLE);
+					$em->persist($permission);
+				}
+				array_push($permissions, $permission);
+			}
+		}
+		$em->flush();
+
+		$output->writeln('integerated functions and permissions created');
+	}
+}

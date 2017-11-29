@@ -1,0 +1,18 @@
+parameters:
+#    gost_site_manager.example.class: Gost\Bundle\SiteManagerBundle\Example
+
+services:
+
+    gost_site_manager.twig_extension:
+        class: Gost\Bundle\SiteManagerBundle\Twig\Extension\SiteManagerExtension
+        arguments: ["@service_container" ]
+        tags: 
+            - { name: twig.extension }
+
+    gost_site_manager.context:
+        class: Gost\Bundle\SiteManagerBundle\Component\MContext
+        arguments: ["@service_container"]
+        
+    gost_site_manager.permission_service:
+        class: Gost\Bundle\SiteManagerBundle\Service\MPermissionService
+        arguments: ["@service_container"]

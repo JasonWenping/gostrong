@@ -1,0 +1,145 @@
+<?php
+
+namespace Gost\Bundle\SiteManagerBundle\Controller;
+
+use Gost\Bundle\SiteManagerBundle\Component\MBaseController;
+use Gost\Bundle\BaseBundle\Entity\Announcement;
+use Gost\Bundle\BaseBundle\Form\AnnouncementType;
+
+/**
+ *
+ * @author stalker
+ *        
+ */
+class Announcement extends MBaseController {
+	
+	/**
+	 * @see \Gost\Bundle\SiteManagerBundle\Component\MBaseController::getCurrentFunc()
+	 */
+	public function getCurrentFunc() {
+		return 'announcement';
+	}
+
+	/**
+	 * 公告列表
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+	public function listAction() {
+		$request = $this->getRequest();
+		$em = $this->getDoctrine()->getManager();
+		$list = $em->getRepository('GostBaseBundle:Announcement')->findAll();
+		return $this->smartRender('GostSiteManagerBundle:Announcement:announcement_list.html.twig', '公告列表', array(
+				'tab_id' => $this->getCurrentFunc(),
+				'announcement_list' => $list
+		));
+	}
+
+	/**
+	 * 添加公告
+	 */
+	public function addAction() {
+
+		if ($this->isAllowed('announcement', 2)) {
+			$request = $this->getRequest();
+			$em = $this->getDoctrine()->getManager();
+			$action = $this->generateUrl('gsm_announcement_add');
+			$form = $this->createForm(new AnnouncementType());
+			$title = '添加公告';
+			$error = null;
+			$close_dialog = false;
+
+			if ($request->isMethod('POST') && $form->bind($request)->isValid()) {
+				$data = $form->getData();
+				try {
+					$time = time();
+					$announcement_entity = new Announcement;
+					$announcement_entity->setTitle($data['title'])
+						->setKeywords($data['keywords'])
+						->setContent($data['content'])
+						->setAuthor($data['author'])
+						->setSendtime($time)
+						->flush($em);
+
+					$close_dialog = true;
+				} catch (\Exception $ex) {
+					$error = $ex->getMessage();
+				}
+			}
+			return $this->smartRender('GostSiteManagerBundle:Announcement:announcement_form.html.twig', $title, array(
+					'tab_id' => $this->getCurrentFunc() . '_add',
+					'title' => $title,
+					'error' => $error,
+					'action' => $action,
+					'close_dialog' => $close_dialog,
+					'form' => $form->createView()
+			));
+		} else {
+			return $this->jsonRender(array('error'=>true, 'message'=>'无权进行添加。'));
+		}
+	}
+
+	/**
+	 * 修改公告
+	 */
+	public function editAction($id) {
+		if ($this->isAllowed('announcement', 4)) {
+			$request = $this->getRequest();
+			$em = $this->getDoctrine()->getManager();
+			$announcement = $em->getRepository('GostBaseBundle:Announcement')->find($id);
+			$action = $this->generateUrl('gsm_announcement_edit');
+			$form = $this->createForm(new AnnouncementType());
+			$title = '修改公告';
+			$error = null;
+			$close_dialog = false;
+
+			if ($request->isMethod('POST') && $form->bind($request)->isValid()) {
+				$data = $form->getData();
+				try {
+					$time = time();
+					$announcement->setTitle($data['title'])
+						->setKeywords($data['keywords'])
+						->setContent($data['content'])
+						->setAuthor($data['author'])
+						->setSendtime($time)
+						->flush($em);
+
+					$close_dialog = true;
+				} catch (\Exception $ex) {
+					$error = $ex->getMessage();
+				}
+			}
+			return $this->smartRender('GostSiteManagerBundle:Announcement:announcement_form.html.twig', $title, array(
+					'tab_id' => $this->getCurrentFunc() . '_edit',
+					'title' => $title,
+					'error' => $error,
+					'action' => $action,
+					'close_dialog' => $close_dialog,
+					'form' => $form->createView()
+			));
+		} else {
+			return $this->jsonRender(array('error'=>true, 'message'=>'无权进行修改。'));
+		}
+	}
+
+	/**
+	 * 删除公告
+	 */
+	public function delAction($id) {
+		if ($this->isAllowed('announcement', 8)) {
+			try {
+				$em = $this->getDoctrine()->getManager();
+				if ($announcement = $em->getRepository('GostBaseBundle:Announcement')->find($id)) {
+					return $announcement->remove($em);
+				} else {
+					throw new \Exception('该公告不存在。');
+				}
+				return $this->jsonRender(array('success'=>true, 'message'=>'公告已删除'));
+			} catch (\Exception $ex) {
+				return $this->jsonRender(array('error'=>true, 'message'=>$ex->getMessage()));
+			}
+		} else {
+			return $this->jsonRender(array('error'=>true, 'message'=>'无权进行删除'));
+		}
+	}
+}

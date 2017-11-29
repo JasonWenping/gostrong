@@ -1,0 +1,41 @@
+{% spaceless %}
+<div id="{{ tab_id }}">
+  <form id="channel_form" action="{{ action }}" method="post" class="gostedu-api" gostedu-api="{api:'ui.ajax_form'}" novalidate {{ form_enctype(form) }}>
+    <table class="general_form">
+      <caption>{{ title }}</caption>
+      <tbody>
+        <tr>
+          <td><label>名称:</label></td>
+          <td>{{ form_widget(form.name, { 'attr': {'class': 'validate[required]'} }) }}</td>
+        </tr>
+        <tr>
+          <td><label>缩略图:</label></td>
+          <td>{{ form_widget(form.thumbnail) }}</td>
+        </tr>
+        <tr>
+          <td><label>上级栏目:</label></td>
+          <td>{{ form_widget(form.fid) }}</td>
+        </tr>
+        <tr>
+          <td><label>简介:</label></td>
+          <td>{{ form_widget(form.introduction) }}</td>
+        </tr>
+        <tr>
+          <td><label>内容:</label></td>
+          <td>{{ form_widget(form.content, { 'attr': {'class': 'validate[required]'} }) }}</td>
+        </tr>
+      </tbody>
+    </table>
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    <div class="dialog_toolbar">
+      <button type="submit" class="button_save">保存</button>
+      <button type="button" class="button_cancel gostedu-api" gostedu-api="{api:'ui.close_dialog'{% if not close_dialog %},args:{bind:'click'}{% endif %}}">取消</button>
+      {% if is_permitted('content_channel', 8) and channel%}
+      <button type="button" class="button_delete gostedu-api" gostedu-api="{api:'cp.call_action',args:{confirm:'确定删除该栏目?',action:'{{ path('gsm_content_channel_del', { id: channel.id }) }}',close_dialog:true}}">删除</button></div>
+      {% endif %}
+    {{ form_rest(form) }}
+  </form>
+</div>
+{% endspaceless %}

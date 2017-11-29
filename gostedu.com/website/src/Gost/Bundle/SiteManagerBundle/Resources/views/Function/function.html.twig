@@ -1,0 +1,48 @@
+{% spaceless %}
+<div id="{{ tab_id }}">
+  <form id="function_form" action="{{ action }}" method="post" class="gostedu-api" gostedu-api="{api:'ui.ajax_form'}" novalidate>
+    <table class="general_form">
+      <caption>{{ title }}</caption>
+      <tbody>
+        <tr>
+          <td><label>Key:</label></td>
+          <td><input type="text" name="func_key" {% if current_func %}value="{{ current_func.key }}"{% else %}class="validate[required]" maxlength="32"{% endif %} {% if edit_mode %}readonly="readonly"{% endif %} /></td></tr>
+        <tr>
+          <td><label>标题:</label></td>
+          <td><input type="text" name="func_title" class="validate[required]" maxlength="32"{% if current_func %} value="{{ current_func.title }}"{% endif %} /></td></tr>
+        <tr>
+          <td><label>路由:</label></td>
+          <td><input type="text" name="func_route" class="validate[required]" maxlength="32"{% if current_func %} value="{{ current_func.route }}"{% endif %} /></td></tr>
+        <tr>
+          <td><label>分组:</label></td>
+          <td><select name="func_group" class="validate[required]">
+            <option></option>
+            {% for group in groups %}
+            <option value="{{ group.id }}"{% if current_group == group.id %} selected="selected"{% endif %}>{{ group.title }}({{ group.key }})</option>
+            {% endfor %}</select></td></tr>
+        <tr>
+          <td><label>排序:</label></td>
+          <td><select name="sort_no">{% for i in 0..group_functions %}
+            <option value="{{ i }}"{% if current_func and current_func.sortNo == i %} selected="selected"{% endif %}>{{ i }}</option>
+            {% endfor %}</select></td></tr>
+        <tr>
+          <td colspan="2"><label><input type="checkbox" name="is_menu" value="1"{% if current_func and current_func.isMenuItem %} checked="checked"{% endif %} />是菜单项? (在导航中显示)</label></td>
+        <tr>
+          <td colspan="2">包含操作: (每行一个，格式为"代码:名称;")</td></tr>
+        <tr>
+          <td colspan="2"><textarea name="func_actions" rows="5" cols="30">{% if current_func %}{% for action in current_func.actions %}{{ action.code }}:{{ action.title }};
+{% endfor %}{% endif %}</textarea></td></tr>
+      </tbody>
+    </table>
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    <div class="dialog_toolbar">
+      <button type="submit" class="button_save">保存</button>
+      <button type="button" class="button_cancel gostedu-api" gostedu-api="{api:'ui.close_dialog'{% if not close_dialog %},args:{bind:'click'}{% endif %}}">取消</button>
+      {% if is_permitted('sys_functions', 8) and current_func and deleteable %}
+      <button type="button" class="button_delete gostedu-api" gostedu-api="{api:'cp.call_action',args:{confirm:'确定删除此功能?',action:'{{ path('gsm_sys_functions_delfunc', {id: current_func.id}) }}',close_dialog:true}}">删除</button></div>
+      {% endif %}
+  </form>
+</div>
+{% endspaceless %}

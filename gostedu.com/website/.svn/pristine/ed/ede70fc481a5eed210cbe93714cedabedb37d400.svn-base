@@ -1,0 +1,38 @@
+/**
+ * 后台管理
+ * 
+ */
+
+;(function(window, $, undefined){
+	$.GosteduCP = function() {
+		this._isInited = false;
+	};
+	
+	$.GosteduCP.prototype = {
+			/// start
+
+			/**
+			 * 主导航
+			 */
+			leftmenu: function(dispatcher, args) {
+				$(dispatcher).find('.menu-group').each(function(i){
+					var $submenu = $(this).find('.menu-func').toggle();
+					$(this).find('.header').click(function(e){
+						$submenu.toggle();
+						e.preventDefault();
+					});
+				});
+			},
+			
+			/// end
+			init: function(core) {
+				this.core = core;
+				this._isInited = true;
+			},
+			isInited: function() {
+				return this._isInited;
+			}
+	};
+	
+	$.extend($.Gostedu.plugins, { cp: new $.GosteduCP() });
+})(window, jQuery);

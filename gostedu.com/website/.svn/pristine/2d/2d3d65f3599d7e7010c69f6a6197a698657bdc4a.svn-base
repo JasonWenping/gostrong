@@ -1,0 +1,71 @@
+<?php
+
+namespace Gost\Bundle\SiteManagerBundle\Twig\Extension;
+
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+/**
+ * Twig模板扩展
+ *
+ * @author devylee
+ *        
+ */
+class SiteManagerExtension extends \Twig_Extension implements ContainerAwareInterface {
+
+	/**
+	 * @var ContainerInterface
+	 */
+	private $container;
+	
+	function __construct(ContainerInterface $container = null) {
+		$this->setContainer($container);
+	}
+	
+	/**
+	 * @see \Symfony\Component\DependencyInjection\ContainerAwareInterface::setContainer()
+	 */
+	public function setContainer(ContainerInterface $container = null) {
+		$this->container = $container;
+	}
+
+	/**
+	 * @see Twig_ExtensionInterface::getName()
+	 */
+	public function getName() {
+		return 'gost_site_manager_twig_extension';
+	}
+	
+	/**
+	 * @see Twig_Extension::getFilters()
+	 */
+	public function getFilters() {
+		return array(
+				
+		);
+	}
+	
+	/**
+	 * @see Twig_Extension::getFunctions()
+	 */
+	public function getFunctions() {
+		return array(
+				'is_permitted' => new \Twig_Function_Method($this, 'is_permitted'),
+		);
+	}
+	
+	/**
+	 * @see Twig_Extension::getGlobals()
+	 */
+	public function getGlobals() {
+		return array(
+				
+		);
+	}
+	
+	public function is_permitted() {
+		// TODO
+	}
+	
+}

@@ -1,0 +1,21 @@
+﻿	* {margin: 0; padding: 0;}
+
+		.content {width:auto; height:837px;}
+		.content ul{margin:0px;padding:0px;}
+		.content > ul {list-style: none;}
+		.content .menu-one > li {width: 208px; height: auto; overflow: hidden;}
+		.content .menu-one > li.firstChild {border: 0; float:right;}
+		.content .menu-one .header {height: 38px; cursor: pointer; margin:0px;}
+		.content .menu-one .header:hover,
+		.content .menu-one .menuOne-current {}
+		.content .menu-one .header .txt{float: left; color: #fff;}
+		.menu-two img{float:right;}
+		.content .menu-two {display: none; width: 190px; height: auto; float:left; text-align:left;margin-right:60px;}
+		.content .menu-two li, .menu-func li {width:190px; height:35px;  font: 14px/22px "Microsoft YaHei", arial, serif; line-height: 35px; text-indent:0; text-decoration:none;}
+		.content .menu-two li.firstChild {border: 0;}
+		.menu-two li img{float:left; padding-left:50px; padding-top:12px;}
+		.menu-two li a{color:#666;}
+		.menu-func li img{float:left; padding-left:50px; padding-top:12px;}
+
+		.content .menu-show .header .arrow {background-image: url(arrow-u.png);}
+

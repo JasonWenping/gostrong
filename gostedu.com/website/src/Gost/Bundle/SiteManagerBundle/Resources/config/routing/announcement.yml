@@ -1,0 +1,18 @@
+# 公告管理
+gsm_announcement:
+    pattern: /announcement
+    defaults: { _controller: "GostSiteManagerBundle:Announcement:list" }
+
+gsm_announcement_add:
+    pattern: /announcement/add
+    defaults: { _controller: "GostSiteManagerBundle:Announcement:add"}
+
+gsm_announcement_edit:
+    pattern: /announcement/edit/{id}
+    defaults: { _controller: "GostSiteManagerBundle:Announcement:edit"}
+    requirements: { id: \d+ }
+
+gsm_announcement_del:
+    pattern: /announcement/del/{id}
+    defaults: { _controller: "GostSiteManagerBundle:Announcement:del"}
+    requirements: { id: \d+ }

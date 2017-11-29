@@ -1,0 +1,38 @@
+{% spaceless %}
+<div id="{{ tab_id }}">
+
+<table border="0" cellspacing="1" cellpadding="0" class="gostedu-api" gostedu-api="{api:'ui.tree_table'}">
+  <caption class="f14"><strong>栏目列表</strong>
+  {% if is_permitted('content_channel', 2) %}
+    <a href="{{ path('gsm_content_channel_add') }}" class="gostedu-api" gostedu-api="{api:'cp.form_dialog',args:{title:'添加栏目',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_content_channel') }}'}}">添加栏目</a>
+  {% endif %}
+  </caption>
+   <thead>
+       <tr>
+           <th>ID</th>
+           <th>上级栏目</th>
+           <th>名称</th>
+           <th>操作</th>
+       </tr>
+   </thead>
+   <tbody>
+   {% for channel in channel_list %}
+       <tr class="datarow_{{ loop.index0 % 2 + 1 }}" data-tt-id="{{ channel.id }}" data-tt-parent-id="{{channel.fid }}"> 
+            <td>{{ channel.id }}</td>
+            <td>{{ channel.fid }}</td>
+            <td>{{ channel.name }}</td>
+            <td class="action_column">
+            {% if is_permitted('content_channel', 4) %}
+              <a href="{{ path('gsm_content_channel_edit', { id: channel.id }) }}" class="gostedu-api" gostedu-api="{api:'cp.form_dialog',args:{title:'修改栏目',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_content_channel') }}'}}">修改</a>
+            {% endif %}
+            {% if is_permitted('content_channel', 8) %}
+              <a href="{{ path('gsm_content_channel_del', { id: channel.id }) }}" class="gostedu-api" gostedu-api="{api:'cp.form_dialog',args:{title:'删除栏目',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_content_channel') }}'}}">删除</a>
+            {% endif %}
+           </td> 
+       </tr>
+   {% endfor %}
+   </tbody>
+</table>
+
+</div>
+{% endspaceless %}

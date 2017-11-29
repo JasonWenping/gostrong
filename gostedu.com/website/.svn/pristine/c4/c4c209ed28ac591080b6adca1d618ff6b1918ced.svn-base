@@ -1,0 +1,127 @@
+/**
+ * 后台管理
+ * 
+ */
+
+;(function(window, $, undefined){
+	$.GosteduCP = function() {
+		this._isInited = false;
+	};
+	
+	$.GosteduCP.prototype = {
+			/// start
+
+			/**
+			 * 主导航
+			 */
+			leftmenu: function(dispatcher, args) {
+				$(dispatcher).find('.menu-group').each(function(i){
+					var $submenu = $(this).find('.menu-func').toggle();
+					$(this).find('.header').click(function(e){
+						$submenu.toggle();
+						e.preventDefault();
+					});
+				});
+			},
+
+			/**
+			 * 表单对话框
+			 */
+			form_dialog: function(dispatcher, args) {
+				var $dispatcher = $(dispatcher), instance = this, notify = null, options = $.extend({
+	                width : 450,// height: 500,
+					url: $dispatcher.attr('href'),
+					close: function(event, ui) {
+						$(this).dialog('destroy');
+						if (args.refresh && args.srcurl) {
+							instance.core.ajax(args.srcurl, {}, {
+								type: 'GET', dataType: 'html', success: function(html) {
+									try {
+										var $html = $(html),
+											$content = $html.is(args.refresh) ? $html : $html.find(args.refresh);
+										$(args.refresh).replaceWith($content).remove();
+										instance.core.reload($content);
+									} catch (ex) {
+										console.log(ex);
+									}
+									instance.core.plugins['ui'].close_notify(notify);
+								}, error: function(xhr, status, error) {
+									instance.core.plugins['ui'].close_notify(notify);
+								}, beforeSend: function(xhr, settings){
+									notify = instance.core.plugins['ui'].notify({text: '稍候片刻...'});
+								}
+							});
+						}
+					}
+				}, args);
+				this.core.plugins['ui'].modal_dialog(dispatcher, options);
+			},
+
+			/**
+			 * 异步操作
+			 */
+			call_action: function(dispatcher, args) {
+				var instance = this, $dispatcher = $(dispatcher), notify = null, action = '';
+				
+				if (args.action)
+					action = args.action;
+				else if ($dispatcher.is('a'))
+					action = $dispatcher.attr('href');
+				
+				$dispatcher.click(function(e){
+					if (args.confirm) {
+						if (!confirm(args.confirm))
+							return false;
+					}
+					instance.core.ajax(action, {}, {
+						type: 'POST', dataType: 'json', success: function(resp, status, xhr) {
+							if (resp.error) {
+								instance.core.plugins['ui'].close_notify(notify);
+								instance.core.plugins['ui'].notify({text: resp.message, type: 'error', timeout: 3000});
+							} else {
+								if (args.close_dialog) {
+									instance.core.plugins['ui'].close_dialog(dispatcher, {});	
+								}
+								instance.core.plugins['ui'].close_notify(notify);
+							}
+							if (args.refresh && args.srcurl) {
+								instance.core.ajax(args.srcurl, {}, {
+									type: 'GET', dataType: 'html', success: function(html) {
+										try {
+											var $html = $(html),
+												$content = $html.is(args.refresh) ? $html : $html.find(args.refresh);
+											$(args.refresh).replaceWith($content).remove();
+											instance.core.reload($content);
+										} catch (ex) {
+											console.log(ex);
+										}
+										instance.core.plugins['ui'].close_notify(notify);
+									}, error: function(xhr, status, error) {
+										instance.core.plugins['ui'].close_notify(notify);
+									}, beforeSend: function(xhr, settings){
+										notify = instance.core.plugins['ui'].notify({text: '稍候片刻...'});
+									}
+								});
+							}
+						}, error: function(xhr, status, error) {
+							instance.core.plugins['ui'].close_notify(notify);
+						}, beforeSend: function(xhr, settings){
+							notify = instance.core.plugins['ui'].notify({text: '操作中, 请稍候...'});
+						}
+					});
+					e.preventDefault();
+				});
+			},
+			
+			/// end
+			init: function(core) {
+				this.core = core;
+				this._isInited = true;
+			},
+			isInited: function() {
+				return this._isInited;
+			}
+	};
+	
+	$.extend($.Gostedu.plugins, { cp: new $.GosteduCP() });
+})(window, jQuery);

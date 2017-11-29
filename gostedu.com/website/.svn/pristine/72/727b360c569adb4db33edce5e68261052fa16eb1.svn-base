@@ -1,0 +1,35 @@
+<?php
+
+namespace Gost\Bundle\BaseBundle\Service;
+
+use Gost\Bundle\BaseBundle\Component\BaseService;
+
+/**
+ * 导航服务类
+ *
+ * @author devylee
+ *        
+ */
+class NavigationService extends BaseService {
+	
+	/**
+	 * @todo
+	 */
+	public function getNavigation() {
+		//TODO
+	}
+
+	/**
+	 * @todo
+	 */
+	public function getMenu() {
+		//TODO
+	}
+
+	/**
+	 * @todo
+	 */
+	public function getParameter() {
+		//TODO
+	}
+}

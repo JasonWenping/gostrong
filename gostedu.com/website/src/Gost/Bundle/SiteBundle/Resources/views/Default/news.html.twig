@@ -1,0 +1,9 @@
+{% extends 'GostSiteBundle::content.html.twig' %}
+{% block content %}
+<h2>{{ news.title }}</h2>
+<div class="content_info">文章来源：{{ news.source }} 作者：{{ news.author }} 更新日期：{{ news.sendtime }}</div>
+<hr />
+<div>
+{{ news.content }}
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% spaceless %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+	{% block document_head %}
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		{% block document_meta %}
+		{% endblock %}
+		{% block document_seo %}
+		<title>{% block document_title %}国士堂{% endblock %}</title>
+		{% endblock %}
+
+		{% block document_stylesheet %}
+		{% stylesheets 
+			'@GostBaseBundle/Resources/public/css/jquery-ui-1.10.3.custom.min.css'
+			filter='?yui_css'
+			output='assets/css/jquery-ui.css' %}
+		<link rel="stylesheet" href="{{ asset_url }}" />
+		{% endstylesheets %}
+		{% stylesheets 
+			'@GostSiteManagerBundle/Resources/public/css/default.css'
+			'@GostSiteManagerBundle/Resources/public/css/nav.css'
+			output='assets/css/default.css' %}
+		<link rel="stylesheet" href="{{ asset_url }}" />
+		{% endstylesheets %}
+		{% endblock %}
+
+		{% block document_javascript %}
+		{% javascripts
+			'@GostBaseBundle/Resources/public/js/jquery-1.10.1.min.js'
+			output='assets/js/jquery.js'%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+		{% javascripts
+			'@GostBaseBundle/Resources/public/js/gost-utils.js'
+			'@GostBaseBundle/Resources/public/js/gost-core.js'
+			'@GostBaseBundle/Resources/public/js/gost-ui.js'
+			'@GostSiteManagerBundle/Resources/public/js/gost-cp.js'
+			filter='?closure'
+			output='assets/js/gostedu-cp.js'%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+		{% endblock %}
+	{% endblock %}
+	</head>
+	<body>
+	<div id="document_holder">
+	{% block document_body %}
+	{% endblock %}
+	</div>
+	<script type="text/javascript">
+	$(document).ready(function(){$('#document_holder').gostedu({selector:'.gostedu-api'});});
+	</script>
+	</body>
+</html>
+{% endspaceless %}

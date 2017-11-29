@@ -1,0 +1,44 @@
+{% spaceless %}
+<div id="{{ tab_id }}">
+
+<table border="0" cellspacing="1" cellpadding="0" class="gostedu-api" gostedu-api="{api:'ui.list_table'}">
+  <caption class="f14"><strong>新闻列表</strong>
+  {% if is_permitted('announcement', 2) %}
+    <a href="{{ path('gsm_announcement_add') }}" class="gostedu-api" gostedu-api="{api:'cp.form_dialog',args:{title:'添加新闻',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_announcement') }}'}}">添加新闻</a>
+  {% endif %}
+  </caption>
+   <thead>
+       <tr>
+           <th>ID</th>
+           <th>标题</th>
+           <th>关键字</th>
+           <th>作者</th>
+           <th>内容</th>
+           <th>添加时间</th>
+           <th>操作</th>
+       </tr>
+   </thead>
+   <tbody>
+   {% for announcement in announcement_list %}
+       <tr class="datarow_{{ loop.index0 % 2 + 1 }}" data-tt-id="{{ announcement.id }}"> 
+            <td>{{ announcement.id }}</td>
+            <td>{{ announcement.title }}</td>
+            <td>{{ announcement.keywords }}</td>
+            <td>{{ announcement.author }}</td>
+            <td>{{ announcement.content[:50] }}</td>
+            <td>{{ announcement.sendtime|date("Y-m-d H:s") }}</td>
+            <td class="action_column">
+            {% if is_permitted('announcement', 4) %}
+              <a href="{{ path('gsm_announcement_edit', { id: announcement.id }) }}" class="gostedu-api" gostedu-api="{api:'cp.form_dialog',args:{title:'修改新闻',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_announcement') }}'}}">修改</a>
+            {% endif %}
+            {% if is_permitted('announcement', 8) %}
+              <a href="{{ path('gsm_announcement_del', { id: announcement.id }) }}" class="gostedu-api" gostedu-api="{api:'cp.form_dialog',args:{title:'删除新闻',refresh:'#{{ tab_id }}',srcurl:'{{ path('gsm_announcement') }}'}}">删除</a>
+            {% endif %}
+           </td> 
+       </tr>
+   {% endfor %}
+   </tbody>
+</table>
+
+</div>
+{% endspaceless %}

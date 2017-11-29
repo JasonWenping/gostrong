@@ -1,0 +1,50 @@
+gsm_homepage:
+    path:     /
+    defaults: { _controller: "GostSiteManagerBundle:Default:index" }
+
+gsm_login:
+    path:     /login
+    defaults: { _controller: "GostSiteManagerBundle:Secure:login" }
+
+gsm_login_check:
+    path:     /login_check
+
+gsm_logout:
+    path:     /logout
+
+gsm_system:
+    resource: routing/sys.yml
+    prefix: /sys
+
+gsm_content:
+    resource: routing/content.yml
+    prefix: /content
+
+gsm_navigation:
+    resource: routing/navigation.yml
+    prefix: /navigation
+
+gsm_advisory:
+    resource: routing/advisory.yml
+    prefix: /advisory
+
+gsm_picshow:
+    resource: routing/picshow.yml
+    prefix: /picshow
+
+gsm_flink:
+    resource: routing/flink.yml
+    prefix: /flink
+
+gsm_announcement:
+    resource: routing/announcement.yml
+    prefix: /announcement
+
+gsm_cooperator:
+    resource: routing/cooperator.yml
+    prefix: /cooperator=======
+    prefix: /content
+
+gsm_navigation:
+    resource: routing/navigation.yml
+    prefix: /navigation>>>>>>> .r61
